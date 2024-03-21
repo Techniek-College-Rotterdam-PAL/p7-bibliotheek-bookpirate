@@ -27,5 +27,5 @@ Ons kennis is goed genoeg dat wij soepel samen kunnen werken zonder dat dat een 
 
 # Wat we hebben gebruikt
 Voor de Front-end hebben we een gratis template van
-![Free CSS](https://www.free-css.com/free-css-templates/page280/dbi "free-css.com")
+[free-css.com](https://www.free-css.com/free-css-templates/page280/dbi "free-css.com")
 gebruikt voor het project.
