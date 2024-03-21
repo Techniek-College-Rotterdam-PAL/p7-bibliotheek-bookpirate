@@ -25,7 +25,9 @@ Ons kennis is goed genoeg dat wij soepel samen kunnen werken zonder dat dat een 
 
 # Wireframe
 
-# Wat we hebben gebruikt
+# Sources
 Voor de Front-end hebben we een gratis template van
-![Free CSS](https://www.free-css.com/free-css-templates/page280/dbi "free-css.com")
-gebruikt voor het project.
+[free-css.com](https://www.free-css.com/free-css-templates/page280/dbi "free-css.com")
+gebruikt voor het project. Natuurlijk hebben wij aanpassing gemaakt aan de template.
+
+De template gebruikt Bootstrap dus we hebben aanpassingen gemaakt daarmee.
