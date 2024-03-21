@@ -1,6 +1,6 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/Rouxz_oS)
 
-# Marison's & Tanay's bibbliotheek project (AKA Book Pirate)
+# Marison's & Tanay's bibliotheek project (AKA Book Pirate)
 
 # Definition of ...
 
@@ -20,4 +20,12 @@ als ik tegen een error kom of iets niet weet kan ik altijd naar Tanay die het va
 Ons kennis is goed genoeg dat wij soepel samen kunnen werken zonder dat dat een  probleem zal worden voor het team.
 
 # ERD
-![ERD](ERD%202.png)
+
+![ERD](ERD%202.png "ERD")
+
+# Wireframe
+
+# Wat we hebben gebruikt
+Voor de Front-end hebben we een gratis template van
+![Free CSS](https://www.free-css.com/free-css-templates/page280/dbi "free-css.com")
+gebruikt voor het project.
