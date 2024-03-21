@@ -1,6 +1,8 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/Rouxz_oS)
 
-# Marison's & Tanay's bibbliotheek project
+# Marison's & Tanay's bibbliotheek project (AKA Book Pirate)
+
+# Definition of ...
 
 ## Definition of Done
 
@@ -15,4 +17,7 @@ wij kunnen goed met elkaar op schieten en dat vinden wij allebei een MUST.
 Wij zijn allebei gevorderd in het coderen van PHP, 
 HTML, CSS ect. Ik weet zelf heel veel over PHP maar, 
 als ik tegen een error kom of iets niet weet kan ik altijd naar Tanay die het vast wel weet. 
-Ons kennis is goed genoeg dat wij soepel samen kunnen werken zonder dat dat een  probleem zal worden voor het team. 
+Ons kennis is goed genoeg dat wij soepel samen kunnen werken zonder dat dat een  probleem zal worden voor het team.
+
+# ERD
+![ERD](ERD%202.png)
