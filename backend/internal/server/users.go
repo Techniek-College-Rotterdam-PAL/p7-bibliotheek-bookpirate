@@ -1,12 +1,17 @@
 package server
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"server/internal/models"
+	"strings"
 )
 
 func Home(c *gin.Context) {
@@ -31,8 +36,25 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
+	emailDomain := strings.Split(regRequest.Email, "@")[1]
+	if emailDomain != TCRStudentDomain {
+		fmt.Print(emailDomain, TCRStudentDomain)
+		c.JSON(http.StatusNotAcceptable, Message{
+			Code:    InvalidEmail,
+			Message: messages[InvalidEmail],
+		})
+		return
+	}
+
 	var user models.User
 	if err := db.Where("email = ?", regRequest.Email).First(&user).Error; err == nil {
+		c.JSON(http.StatusNotAcceptable, Message{
+			Code:    EmailAlreadyUsed,
+			Message: messages[EmailAlreadyUsed],
+		})
+		return
+	}
+	if err := db.Where("username = ?", regRequest.Username).First(&user).Error; err == nil {
 		c.JSON(http.StatusNotAcceptable, Message{
 			Code:    UsernameAlreadyTaken,
 			Message: messages[UsernameAlreadyTaken],
@@ -45,6 +67,12 @@ func Register(c *gin.Context) {
 	//
 	//cipherText := hex.EncodeToString(dataHmac)
 	//key := hex.EncodeToString(secret)
+
+	hash := sha256.Sum256([]byte(regRequest.Password))
+	user.HashedPassword = hex.EncodeToString(hash[:])
+	user.Username = regRequest.Username
+	user.Email = regRequest.Email
+	user.ID = uuid.New().ID()
 
 	if err := db.Create(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, Message{

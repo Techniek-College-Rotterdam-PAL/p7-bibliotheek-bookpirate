@@ -68,6 +68,7 @@ func FeedBooks(c *gin.Context) {
 			Code:    DatabaseQueryError,
 			Message: messages[DatabaseQueryError],
 		})
+		return
 	}
 	data, err := json.Marshal(results)
 	if err != nil {
@@ -80,5 +81,43 @@ func FeedBooks(c *gin.Context) {
 	fmt.Print(data)
 	c.JSON(http.StatusOK, Message{
 		Data: data,
+	})
+}
+
+func AddBook(c *gin.Context) {
+	if c.Request.Method != http.MethodPost {
+		c.JSON(http.StatusMethodNotAllowed, Message{
+			Code:    MethodNotAllowed,
+			Message: messages[MethodNotAllowed],
+		})
+		return
+	}
+	var book models.Book
+	if err := c.ShouldBindJSON(&book); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, Message{
+			Code:    MalformedContent,
+			Message: messages[MalformedContent],
+		})
+		return
+	}
+
+	if err := db.Where("isbn = ?", book.Isbn).First(&book).Error; err == nil {
+		c.JSON(http.StatusNotAcceptable, Message{
+			Code:    IsbnAlreadyFound,
+			Message: messages[IsbnAlreadyFound],
+		})
+		return
+	}
+	if err := db.Create(&book).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    DatabaseQueryError,
+			Message: messages[DatabaseQueryError],
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, Message{
+		Code:    SuccessfulInsert,
+		Message: messages[SuccessfulInsert],
 	})
 }

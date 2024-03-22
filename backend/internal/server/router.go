@@ -19,7 +19,7 @@ func Run() {
 	config := util.LoadConfigFile()
 
 	router.NoRoute(func(c *gin.Context) {
-		c.File("../../../static/errorpage.html")
+		c.File("../../../static/error-page.html")
 	})
 	router.NoMethod(func(c *gin.Context) {
 		c.JSON(http.StatusMethodNotAllowed, Message{
