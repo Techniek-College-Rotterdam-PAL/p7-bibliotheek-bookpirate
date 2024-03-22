@@ -195,6 +195,14 @@ img {
     border: none !important;
 }
 
+.searchbar {
+    width: 600px;
+}
+
+.custom-radius {
+    border-radius: 30px;
+}
+
 .badge {
     font-weight: 500;
 }
@@ -779,7 +787,7 @@ input.email_text::placeholder {
 .footer_section {
     width: 100%;
     float: left;
-    background-color: #212121;
+    background-color: #3c0e0e;
     height: auto;
     padding: 90px 0px;
 }
