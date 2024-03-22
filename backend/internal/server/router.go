@@ -19,10 +19,7 @@ func Run() {
 	config := util.LoadConfigFile()
 
 	router.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, Message{
-			Code:    NotFound,
-			Message: messages[NotFound],
-		})
+		c.File("../../../static/errorpage.html")
 	})
 	router.NoMethod(func(c *gin.Context) {
 		c.JSON(http.StatusMethodNotAllowed, Message{
