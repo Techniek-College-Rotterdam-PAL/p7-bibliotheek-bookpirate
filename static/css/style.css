@@ -196,7 +196,9 @@ img {
 }
 
 .searchbar {
-    width: 600px;
+    margin: 0;
+    padding: 0;
+    width: 400px;
 }
 
 .custom-radius {
@@ -234,7 +236,7 @@ button {
 }
 
 .logo {
-    width: 15%;
+    width: 5%;
     float: left;
 }
 
