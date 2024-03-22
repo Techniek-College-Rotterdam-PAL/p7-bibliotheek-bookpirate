@@ -1,6 +1,6 @@
 [server]
 ip = "127.0.0.1"
-port = 80
+port = 8080
 
 [database]
 dsn = "root:@tcp(127.0.0.1:3306)/librarydb"
