@@ -1,0 +1,3 @@
+### Definition of Fun
+
+Ik en Tanay hebben elkaar gekozen omdat wij sinds begin van de opleiding al een goed dynamiek met elkaar hebben, wij kunnen goed met elkaar op schieten en dat vinden wij allebei een MUST. Wij zijn allebei gevorderd in het coderen van PHP, HTML, CSS ect. Ik weet zelf heel veel over PHP maar, als ik tegen een error kom of iets niet weet kan ik altijd naar Tanay die het vast wel weet.  Ons kennis is goed genoeg dat wij soepel samen kunnen werken zonder dat dat een  probleem zal worden voor het team. 

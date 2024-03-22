@@ -12,6 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var db = &gorm.DB{}
+
 func Run() {
 	router := gin.New()
 	config := util.LoadConfigFile()

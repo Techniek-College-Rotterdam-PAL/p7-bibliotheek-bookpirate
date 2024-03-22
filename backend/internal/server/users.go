@@ -2,17 +2,12 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"server/internal/models"
 )
-
-var db *gorm.DB
-
-func Login(c *gin.Context) {
-
-}
 
 func Home(c *gin.Context) {
 
@@ -64,4 +59,48 @@ func Register(c *gin.Context) {
 		Message: messages[SuccessfulRegistration],
 	})
 
+}
+
+func Login(c *gin.Context) {
+	var authRequest models.AuthenticationRequest
+	if err := c.ShouldBindJSON(&authRequest); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, Message{
+			Code:    InvalidAuthenticationRequest,
+			Message: messages[InvalidAuthenticationRequest],
+		})
+		return
+	}
+
+	if err := validator.New().Struct(authRequest).(validator.ValidationErrors); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, Message{
+			Code:    InvalidAuthenticationRequest,
+			Message: messages[InvalidAuthenticationRequest],
+		})
+		return
+	}
+
+	var user models.User
+	//if err := db.Site().First(&user, &models.User{Email: authRequest.Email}).Error; err != nil {
+	//	switch {
+	//	case errors.Is(err, gorm.ErrRecordNotFound):
+	//		c.JSON(http.StatusNotFound, Message{
+	//			Code:    UserNotFound,
+	//			Message: messages[UserNotFound],
+	//		})
+	//	default:
+	//		c.JSON(http.StatusInternalServerError, Message{
+	//			Code:    DatabaseQueryError,
+	//			Message: messages[DatabaseQueryError],
+	//		})
+	//	}
+	//	return
+	//}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(authRequest.Password), []byte(user.HashedPassword)); err != nil {
+		c.JSON(http.StatusForbidden, Message{
+			Code:    IncorrectPassword,
+			Message: messages[IncorrectPassword],
+		})
+		return
+	}
 }
