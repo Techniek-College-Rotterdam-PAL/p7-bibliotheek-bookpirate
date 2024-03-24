@@ -9,6 +9,7 @@ const (
 var middleWares = map[string]func(*gin.Context){
 	PathAPI + "register:POST":     Register,
 	PathAPI + "fetch-books:POST":  FeedBooks,
+	PathAPI + "add-book:POST":     AddBook,
 	PathAPI + "search-books:POST": nil,
 	PathAPI + "remove:DELETE":     nil,
 }

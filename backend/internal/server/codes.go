@@ -7,6 +7,10 @@ import (
 type Code uint32
 
 const (
+	TCRStudentDomain string = "student.zadkine.nl"
+)
+
+const (
 	MethodNotAllowed = iota
 	MalformedContent
 	IncorrectPassword
@@ -19,9 +23,13 @@ const (
 	InvalidAuthenticationRequest
 	DatabaseQueryError
 	UsernameAlreadyTaken
+	EmailAlreadyUsed
+	InvalidEmail
+	IsbnAlreadyFound
 	SuccessfulAuthentication
 	SuccessfulDeauthentication
 	SuccessfulRegistration
+	SuccessfulInsert
 	UnsuccessfulRegistration
 	InvalidSession
 )
@@ -39,9 +47,13 @@ var messages = map[Code]string{
 	InvalidAuthenticationRequest: "Malformed body or invalid content.",
 	DatabaseQueryError:           "Internal server error.",
 	UsernameAlreadyTaken:         "Username already in use",
+	IsbnAlreadyFound:             "Book with ISBN already added",
+	InvalidEmail:                 "Invalid Email Domain",
+	EmailAlreadyUsed:             "Email already used",
 	SuccessfulAuthentication:     "Successfully authenticated.",
 	SuccessfulDeauthentication:   "Successfully deauthenticated.",
 	SuccessfulRegistration:       "Successfully registered.",
+	SuccessfulInsert:             "Successfully added book.",
 	UnsuccessfulRegistration:     "Internal Server Error.",
 	InvalidSession:               "Invalid session.",
 }
