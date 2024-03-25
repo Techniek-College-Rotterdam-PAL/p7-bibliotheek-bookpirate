@@ -20,7 +20,7 @@ ___
 ## Wireframe
 ### Coming soon...
 ## Class diagram
-### Coming soon...
+![Class diagram](classdiagram%20booksystem.png "class diagram")
 ___
 # Sources
 Voor de Front-end hebben we een gratis template van
