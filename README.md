@@ -18,7 +18,7 @@ ___
 ## ERD
 ![ERD](ERD%202.png "ERD")
 ## Wireframe
-### Coming soon...
+![Wireframe](wireframe%20booksystem.png "Wireframe")
 ## Class diagram
 ![Class diagram](classdiagram%20booksystem.png "class diagram")
 ___
