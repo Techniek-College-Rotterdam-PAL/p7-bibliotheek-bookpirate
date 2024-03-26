@@ -12,16 +12,17 @@
 <main>
     <form action="" method="post">
         <h1>Register</h1>
-        <div>
-            <label for="email">Email:</label>
-            <input type="text" name="email" id="email">
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
         </div>
         <div>
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password">
-        </div>
-        <div>
-            <label for=""></label>
+            <label for="inputPassword5" class="form-label">Password:</label>
+            <input type="password" id="inputPassword5" class="form-control" aria-describedby="passwordHelpBlock">
+            <div id="passwordHelpBlock" class="form-text">
+                Your password must be 8–20 characters long, contain letters and numbers,
+                and must NOT contain spaces, special characters, or emojis.
+            </div>
         </div>
     </form>
 </main>
