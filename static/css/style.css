@@ -794,9 +794,11 @@ input.email_text::placeholder {
 .footer_section {
     width: 100%;
     float: left;
+    min-height: 100vh;
     background-color: #3c0e0e;
     height: auto;
     padding: 90px 0px;
+    position: relative;
 }
 
 .footer_menu {

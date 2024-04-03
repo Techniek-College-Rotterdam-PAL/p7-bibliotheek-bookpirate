@@ -13,13 +13,21 @@ import (
 )
 
 var db = &gorm.DB{}
+var (
+	authDb = func() *gorm.DB { return &gorm.DB{} }
+	mainDb = func() *gorm.DB { return &gorm.DB{} }
+)
 
 func Run() {
 	router := gin.New()
 	config := util.LoadConfigFile()
 
 	router.NoRoute(func(c *gin.Context) {
-		c.File("../../../static/error-page.html")
+		if strings.Contains(c.Request.RequestURI, "api") || c.Request.Method != http.MethodGet {
+			c.JSON(http.StatusBadRequest, Message{})
+		} else {
+			c.File("../../../static/errorpage.html")
+		}
 	})
 	router.NoMethod(func(c *gin.Context) {
 		c.JSON(http.StatusMethodNotAllowed, Message{
@@ -30,6 +38,9 @@ func Run() {
 	router.Static("../../../static", "../../.././static")
 	router.GET("/", func(c *gin.Context) {
 		c.File("../../../static/index.html")
+	})
+	router.GET("/register", func(c *gin.Context) {
+		c.File("../../../static/register.html")
 	})
 
 	for s, middleware := range middleWares {

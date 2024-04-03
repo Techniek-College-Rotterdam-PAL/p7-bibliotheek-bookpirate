@@ -1,17 +1,21 @@
 package server
 
 import (
-	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 	"net/http"
 	"server/internal/models"
+	"server/internal/util"
+	"strconv"
 	"strings"
+	"time"
 )
 
 func Home(c *gin.Context) {
@@ -19,6 +23,9 @@ func Home(c *gin.Context) {
 }
 
 func Register(c *gin.Context) {
+	mu.Lock()
+	defer mu.Unlock()
+
 	c.Header(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
 
 	if c.Request.Method != http.MethodPost {
@@ -36,12 +43,18 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
-	emailDomain := strings.Split(regRequest.Email, "@")[1]
-	if emailDomain != TCRStudentDomain {
-		fmt.Print(emailDomain, TCRStudentDomain)
+	email := strings.Split(regRequest.Email, "@")
+	if email[1] != TCRStudentDomain || len(email[0]) == 0 {
 		c.JSON(http.StatusNotAcceptable, Message{
 			Code:    InvalidEmail,
 			Message: messages[InvalidEmail],
+		})
+		return
+	}
+	if len(regRequest.Password) < 6 || len(regRequest.Password) > defaultAuthLength {
+		c.JSON(http.StatusNotAcceptable, Message{
+			Code:    InvalidPassword,
+			Message: messages[InvalidPassword],
 		})
 		return
 	}
@@ -61,20 +74,42 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
-	//hmac := hmac.New(sha256.New, secret)
-	//hmac.Write([]byte(data))
-	//dataHmac := hmac.Sum(nil)
-	//
-	//cipherText := hex.EncodeToString(dataHmac)
-	//key := hex.EncodeToString(secret)
 
-	hash := sha256.Sum256([]byte(regRequest.Password))
-	user.HashedPassword = hex.EncodeToString(hash[:])
-	user.Username = regRequest.Username
-	user.Email = regRequest.Email
-	user.ID = uuid.New().ID()
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(regRequest.Password), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    InternalServerError,
+			Message: messages[InternalServerError],
+		})
+		return
+	}
+	user = models.User{ // only for now.
+		ID:             util.GenerateSnowflake(time.Now()),
+		Email:          regRequest.Email,
+		Username:       regRequest.Username,
+		HashedPassword: string(hashedPassword),
+	}
 
-	if err := db.Create(&user).Error; err != nil {
+	currentTime := time.Now()
+	sha1Hasher.Write([]byte(strconv.Itoa(int(user.ID))))
+
+	user.Token = fmt.Sprintf("%v.%v.%v",
+		base64.RawStdEncoding.EncodeToString([]byte(strconv.Itoa(int(user.ID)))),
+		base64.RawStdEncoding.EncodeToString([]byte(strconv.Itoa(int(util.GenerateSnowflake(currentTime))))),
+		util.GenerateRandomString(defaultAuthLength)+hex.EncodeToString(sha256Hasher.Sum(nil)),
+	)
+	data, err := json.Marshal(models.RegistrationResponse{
+		Token:     user.Token,
+		TimeStamp: currentTime.UnixNano(),
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    DatabaseQueryError,
+			Message: messages[DatabaseQueryError],
+		})
+		return
+	}
+	if err = db.Create(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, Message{
 			Code:    DatabaseQueryError,
 			Message: messages[DatabaseQueryError],
@@ -85,11 +120,14 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusOK, Message{
 		Code:    SuccessfulRegistration,
 		Message: messages[SuccessfulRegistration],
+		Data:    data,
 	})
-
 }
 
 func Login(c *gin.Context) {
+	mu.Lock()
+	defer mu.Unlock()
+
 	var authRequest models.AuthenticationRequest
 	if err := c.ShouldBindJSON(&authRequest); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, Message{
@@ -99,36 +137,58 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	if err := validator.New().Struct(authRequest).(validator.ValidationErrors); err != nil {
-		c.JSON(http.StatusUnprocessableEntity, Message{
+	//if err := validator.New().Struct(authRequest); err != nil {
+	//	c.JSON(http.StatusUnprocessableEntity, Message{
+	//		Code:    InvalidAuthenticationRequest,
+	//		Message: messages[InvalidAuthenticationRequest],
+	//	})
+	//	return
+	//}
+
+	var user models.User
+	if err := db.First(&user, &models.User{Email: authRequest.Email}).Error; err != nil {
+		switch {
+		case errors.Is(err, gorm.ErrRecordNotFound):
+			c.JSON(http.StatusNotFound, Message{
+				Code:    UserNotFound,
+				Message: messages[UserNotFound],
+			})
+		default:
+			c.JSON(http.StatusInternalServerError, Message{
+				Code:    DatabaseQueryError,
+				Message: messages[DatabaseQueryError],
+			})
+		}
+		return
+	}
+	if !(user.Email == authRequest.Email && user.Username == authRequest.Username) {
+		c.JSON(http.StatusUnauthorized, Message{
 			Code:    InvalidAuthenticationRequest,
 			Message: messages[InvalidAuthenticationRequest],
 		})
 		return
 	}
-
-	var user models.User
-	//if err := db.Site().First(&user, &models.User{Email: authRequest.Email}).Error; err != nil {
-	//	switch {
-	//	case errors.Is(err, gorm.ErrRecordNotFound):
-	//		c.JSON(http.StatusNotFound, Message{
-	//			Code:    UserNotFound,
-	//			Message: messages[UserNotFound],
-	//		})
-	//	default:
-	//		c.JSON(http.StatusInternalServerError, Message{
-	//			Code:    DatabaseQueryError,
-	//			Message: messages[DatabaseQueryError],
-	//		})
-	//	}
-	//	return
-	//}
-
-	if err := bcrypt.CompareHashAndPassword([]byte(authRequest.Password), []byte(user.HashedPassword)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(authRequest.Password)); err != nil {
 		c.JSON(http.StatusForbidden, Message{
 			Code:    IncorrectPassword,
 			Message: messages[IncorrectPassword],
 		})
 		return
 	}
+
+	data, err := json.Marshal(models.AuthenticationResponse{
+		Token: user.Token,
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    InternalServerError,
+			Message: messages[InternalServerError],
+		})
+		return
+	}
+	c.JSON(http.StatusOK, Message{
+		Code:    SuccessfulRegistration,
+		Message: messages[SuccessfulRegistration],
+		Data:    data,
+	})
 }

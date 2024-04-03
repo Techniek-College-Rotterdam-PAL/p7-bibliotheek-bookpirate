@@ -11,6 +11,9 @@ type SearchRequest struct {
 	Book
 }
 
+type DeleteBook struct {
+	Isbn string `json:"isbn" binding:"required"`
+}
 type InsertBook struct {
 	Book
 }

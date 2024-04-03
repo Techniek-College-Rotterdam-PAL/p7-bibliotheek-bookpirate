@@ -7,7 +7,9 @@ import (
 type Code uint32
 
 const (
-	TCRStudentDomain string = "student.zadkine.nl"
+	TCRStudentDomain    string = "student.zadkine.nl"
+	authorizationHeader string = "authorization"
+	defaultAuthLength   int    = 32
 )
 
 const (
@@ -25,7 +27,10 @@ const (
 	UsernameAlreadyTaken
 	EmailAlreadyUsed
 	InvalidEmail
+	InvalidPassword
+	InvalidAuthentication
 	IsbnAlreadyFound
+	IsbnNotFound
 	SuccessfulAuthentication
 	SuccessfulDeauthentication
 	SuccessfulRegistration
@@ -48,8 +53,11 @@ var messages = map[Code]string{
 	DatabaseQueryError:           "Internal server error.",
 	UsernameAlreadyTaken:         "Username already in use",
 	IsbnAlreadyFound:             "Book with ISBN already added",
+	IsbnNotFound: "unkown Book",
 	InvalidEmail:                 "Invalid Email Domain",
+	InvalidPassword:              "Invalid Password",
 	EmailAlreadyUsed:             "Email already used",
+	InvalidAuthentication:        "invalid email or password",
 	SuccessfulAuthentication:     "Successfully authenticated.",
 	SuccessfulDeauthentication:   "Successfully deauthenticated.",
 	SuccessfulRegistration:       "Successfully registered.",

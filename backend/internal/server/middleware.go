@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"server/internal/models"
@@ -78,7 +77,6 @@ func FeedBooks(c *gin.Context) {
 		})
 		return
 	}
-	fmt.Print(data)
 	c.JSON(http.StatusOK, Message{
 		Data: data,
 	})
@@ -97,6 +95,14 @@ func AddBook(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, Message{
 			Code:    MalformedContent,
 			Message: messages[MalformedContent],
+		})
+		return
+	}
+	var user models.User
+	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err == nil {
+		c.JSON(http.StatusNotAcceptable, Message{
+			Code:    IsbnAlreadyFound,
+			Message: messages[IsbnAlreadyFound],
 		})
 		return
 	}
@@ -120,4 +126,36 @@ func AddBook(c *gin.Context) {
 		Code:    SuccessfulInsert,
 		Message: messages[SuccessfulInsert],
 	})
+}
+
+func RemoveBook(c *gin.Context) {
+	if c.Request.Method != http.MethodPost {
+		c.JSON(http.StatusMethodNotAllowed, Message{
+			Code:    MethodNotAllowed,
+			Message: messages[MethodNotAllowed],
+		})
+		return
+	}
+	var book models.DeleteBook
+	if err := c.ShouldBindJSON(&book); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, Message{
+			Code:    MalformedContent,
+			Message: messages[MalformedContent],
+		})
+		return
+	}
+
+	var user models.User
+	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err == nil {
+		c.JSON(http.StatusUnauthorized, Message{
+			Code:    InvalidSession,
+			Message: messages[InvalidSession],
+		})
+		return
+	}
+	if err := db.Delete().First().Error; err == nil {
+
+	}
+
+
 }

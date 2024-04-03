@@ -23,15 +23,13 @@ function sendRequest(elementId, endPoint) {
     const form = document.getElementById(elementId);
     const formData = new FormData(form);
 
-    console.log(formData)
-
     const jsonData = {};
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
-
+    var resp= {}
     // Use the fetch API to send a POST request with JSON data
-    fetch("http://127.0.0.1:8080/" + endPoint, {
+     fetch("http://127.0.0.1:8080/" + endPoint, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -42,7 +40,7 @@ function sendRequest(elementId, endPoint) {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.json();
+            resp = response.json();
         })
         .then(data => {
             console.log("Request successful:", data);
@@ -50,6 +48,7 @@ function sendRequest(elementId, endPoint) {
         .catch(error => {
             console.error("Request failed:", error);
         });
+    return resp
 }
 
 
@@ -63,7 +62,6 @@ function fetchMovies() {
     })
         .then(response => response.json())
         .then(data => {
-            // Call a function to render the movies data on the page
             renderMovies(data);
         })
         .catch(error => {
@@ -71,48 +69,48 @@ function fetchMovies() {
         });
 }
 
-// {
-//     "movies": [
-//         {
-//             "image": "images/img-3.png",
-//             "title": "CADE Prlor",
-//             "content": "There are many variations",
-//             "stars": 5
-//         }
-//     ]
-// }
-function renderMovies(data) {
-    // Get the movies_main element
-    const moviesMain = document.getElementById('books_main');
+function renderMovies(response) {
+    const booksMain = document.getElementById('books_main');
+    booksMain.innerHTML = '';
+    const data = response.data;
 
-    // Clear any existing movie elements
-    moviesMain.innerHTML = '';
+    if (Array.isArray(data)) {
+        data.forEach(book => {
+            const bookDiv = document.createElement('div');
+            bookDiv.className = 'book_main';
 
-    // Loop through the movies data and create HTML elements for each movie
-    data.forEach(movie => {
-        const movieDiv = document.createElement('div');
-        movieDiv.className = 'iamge_movies_main';
-
-        const movieContent = `
+            const bookContent = `
                     <div class="iamge_movies">
-                        <div class="image_3">
-                            <img src="${movie.image}" class="image" style="width:100%">
-                            <div class="middle">
-                                <div class="playnow_bt">Play Now</div>
-                            </div>
-                        </div>
-                        <h1 class="code_text">${movie.title}</h1>
-                        <p class="there_text">${movie.content}</p>
-                        <div class="star_icon">
-                            <ul>
-                                ${'*'.repeat(movie.stars)}
-                            </ul>
+                        <div class="book">
+                            <h1 class="title">${book.title}</h1>
+                            <p class="author">Author: ${book.author}</p>
+                            <p class="isbn">ISBN: ${book.isbn}</p>
+                            <p class="language">Language: ${book.language}</p>
                         </div>
                     </div>
-                `;
-        movieDiv.innerHTML = movieContent;
+                    `;
+            bookDiv.innerHTML = bookContent;
+            booksMain.appendChild(bookDiv);
+        });
+    } else {
+        console.error('Data is not an array:', data);
+    }
+}
 
-        // Append the movie element to movies_main
-        moviesMain.appendChild(movieDiv);
-    });
+function createAccount() {
+   d = sendRequest('registrationForm', 'api/v1/register')
+    console.log(d)
+    setAuthToken(d.data.token)
+}
+
+function setAuthToken(token) {
+    localStorage.setItem('pb_token', token);
+}
+
+function getAuthToken() {
+    return localStorage.getItem('pb_token');
+}
+
+function removeAuthToken() {
+    localStorage.removeItem('bp_token');
 }
