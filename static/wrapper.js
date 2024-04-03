@@ -77,17 +77,31 @@ function renderMovies(response) {
     if (Array.isArray(data)) {
         data.forEach(book => {
             const bookDiv = document.createElement('div');
-            bookDiv.className = 'row row-cols-6';
+            bookDiv.className = 'col-md-4';
 
-            const bookContent = `
-                        <div class="col">
-                            <h1 class="title">${book.title}</h1>
-                            <p class="author">Author: ${book.author}</p>
-                            <p class="isbn">ISBN: ${book.isbn}</p>
-                            <p class="language">Language: ${book.language}</p>
-                        </div>
+            // language=HTML
+            bookDiv.innerHTML = `
+                          <div class="card mb-4 shadow-sm" style="background: #3c0e0e;">
+                            <!-- Thumbnail -->
+                                <img class="card-img-top" src="#" alt="Thumbnail" style="height: 220px; width: 100%; display: block;"
+                            </div>
+                            <!-- text -->
+                            <div class="card-body">
+                                <h5 class="text-center pb-0" style="color: white">${book.title}</h5>
+                                <p class="card-text" style="color: white">
+                                Author: ${book.author}<br>
+                                Language: ${book.language}<br>
+                                ISBN: ${book.isbn}
+                                </p>
+                            </div>
+                            <!-- Buttons -->
+                            <div class="d-flex justify-content-center align-items-center pb-1">
+                                <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-secondary" style="background: #ffc107" type="button">View</button>
+                                <button class="btn btn-sm btn-outline-secondary" style="background: #ffc107" type="button">Edit</button>
+                            </div>
+                          </div>
                     `;
-            bookDiv.innerHTML = bookContent;
             booksMain.appendChild(bookDiv);
         });
     } else {
