@@ -77,17 +77,15 @@ function renderMovies(response) {
     if (Array.isArray(data)) {
         data.forEach(book => {
             const bookDiv = document.createElement('div');
-            bookDiv.className = 'book_main';
+            bookDiv.className = 'row row-cols-6';
 
             const bookContent = `
-                    <div class="iamge_movies">
-                        <div class="book">
+                        <div class="col">
                             <h1 class="title">${book.title}</h1>
                             <p class="author">Author: ${book.author}</p>
                             <p class="isbn">ISBN: ${book.isbn}</p>
                             <p class="language">Language: ${book.language}</p>
                         </div>
-                    </div>
                     `;
             bookDiv.innerHTML = bookContent;
             booksMain.appendChild(bookDiv);
