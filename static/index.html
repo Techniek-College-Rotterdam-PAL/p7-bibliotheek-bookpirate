@@ -50,14 +50,29 @@
                     <a class="nav-link" href="#">Authors</a>
                 </li>
             </ul>
-            <div class="searchbar" style="width: 250px">
-                <input class="form-control custom-radius dropdown-toggle" data-toggle="dropdown" type="search"
-                       placeholder="Search for books.." aria-label="search for books" id="liveSearch"
-                       autocomplete="off" aria-expanded="false">
+            <div class="form-inline w-auto">
+                <div class="dropdown w-auto">
+                    <div class="searchbar w-auto">
+                        <input class="form-control custom-radius dropdown-toggle" data-toggle="dropdown" type="search"
+                               placeholder="Search for books.." aria-label="search for books" id="liveSearch"
+                               autocomplete="off" aria-expanded="false">
+                    </div>
+                    <div class="dropdown-menu" id="liveSearch-result">
+
+                    </div>
+                </div>
             </div>
-            <div class="search_icon pr-0"><a class="add_button" href="#"><img alt="Add button icon" src="/static/images/plus-24px.svg"><span class="padding_left_15">Add Book</span></a></div>
-            <div class="search_icon"><a href="#"><img alt="Profile button" src="/static/images/user-icon.png"><span
-                    class="padding_left_15">login</span></a></div>
+            <div class="search_icon">
+                <a class="add_button" href="#">
+                    <img alt="Add button icon" src="/static/images/plus-24px.svg">
+                    <span class="padding_left_15">Add Book</span>
+                </a>
+            </div>
+            <div class="search_icon">
+                <a href="#"><img alt="Profile button" src="/static/images/user-icon.png">
+                    <span class="padding_left_15">login</span>
+                </a>
+            </div>
         </div>
     </nav>
 </div>
