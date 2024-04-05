@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// TODO: add more db instances
 var db = &gorm.DB{}
 var (
 	authDb = func() *gorm.DB { return &gorm.DB{} }

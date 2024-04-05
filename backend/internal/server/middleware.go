@@ -7,6 +7,7 @@ import (
 	"server/internal/models"
 )
 
+// SearchBooks returns list of books of requested name from database
 func SearchBooks(c *gin.Context) {
 	if c.Request.Method != http.MethodPost {
 		c.JSON(http.StatusMethodNotAllowed, Message{
@@ -44,6 +45,7 @@ func SearchBooks(c *gin.Context) {
 	})
 }
 
+// FeedBooks returns random list of books from database given the amount requested
 func FeedBooks(c *gin.Context) {
 	if c.Request.Method != http.MethodPost {
 		c.JSON(http.StatusMethodNotAllowed, Message{
@@ -82,6 +84,7 @@ func FeedBooks(c *gin.Context) {
 	})
 }
 
+// AddBook adds book to database
 func AddBook(c *gin.Context) {
 	if c.Request.Method != http.MethodPost {
 		c.JSON(http.StatusMethodNotAllowed, Message{
@@ -100,17 +103,19 @@ func AddBook(c *gin.Context) {
 	}
 	var user models.User
 	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err == nil {
-		c.JSON(http.StatusNotAcceptable, Message{
-			Code:    IsbnAlreadyFound,
-			Message: messages[IsbnAlreadyFound],
+		c.JSON(http.StatusUnauthorized, Message{
+			Code:    InvalidSession,
+			Message: messages[InvalidSession],
 		})
 		return
 	}
 
 	if err := db.Where("isbn = ?", book.Isbn).First(&book).Error; err == nil {
-		c.JSON(http.StatusNotAcceptable, Message{
-			Code:    IsbnAlreadyFound,
-			Message: messages[IsbnAlreadyFound],
+		book.Stock++
+		db.Save(&book)
+		c.JSON(http.StatusOK, Message{
+			Code:    DatabaseQueryError,
+			Message: messages[DatabaseQueryError],
 		})
 		return
 	}
@@ -128,6 +133,7 @@ func AddBook(c *gin.Context) {
 	})
 }
 
+// RemoveBook removes a book from the database if user is admin
 func RemoveBook(c *gin.Context) {
 	if c.Request.Method != http.MethodPost {
 		c.JSON(http.StatusMethodNotAllowed, Message{
@@ -153,9 +159,16 @@ func RemoveBook(c *gin.Context) {
 		})
 		return
 	}
-	if err := db.Delete().First().Error; err == nil {
+	//if err := db.Delete().First().Error; err == nil {
+	//
+	//}
 
+}
+
+func countBooks(isbn string) (int64, error) {
+	var books int64
+	if err := db.Where("isbn = ?").Count(&books).Error; err != nil {
+		return 0, err
 	}
-
-
+	return books, nil
 }

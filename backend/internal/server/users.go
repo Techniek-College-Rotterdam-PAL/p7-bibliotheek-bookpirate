@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"net/http"
@@ -84,7 +85,7 @@ func Register(c *gin.Context) {
 		return
 	}
 	user = models.User{ // only for now.
-		ID:             util.GenerateSnowflake(time.Now()),
+		ID:             uuid.New().ID(),
 		Email:          regRequest.Email,
 		Username:       regRequest.Username,
 		HashedPassword: string(hashedPassword),
@@ -117,7 +118,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, Message{
+	c.JSON(http.StatusCreated, Message{
 		Code:    SuccessfulRegistration,
 		Message: messages[SuccessfulRegistration],
 		Data:    data,
@@ -144,7 +145,6 @@ func Login(c *gin.Context) {
 	//	})
 	//	return
 	//}
-
 	var user models.User
 	if err := db.First(&user, &models.User{Email: authRequest.Email}).Error; err != nil {
 		switch {
