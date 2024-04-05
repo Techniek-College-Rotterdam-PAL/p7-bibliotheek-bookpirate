@@ -29,7 +29,7 @@ function sendRequest(elementId, endPoint) {
     });
     var resp= {}
     // Use the fetch API to send a POST request with JSON data
-     fetch("http://127.0.0.1:8080/" + endPoint, {
+    fetch("http://127.0.0.1:8080/" + endPoint, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -77,17 +77,17 @@ function renderMovies(response) {
     if (Array.isArray(data)) {
         data.forEach(book => {
             const bookDiv = document.createElement('div');
-            bookDiv.className = 'book_main';
+            bookDiv.className = 'row row-cols-6';
 
             const bookContent = `
-                    <div class="iamge_movies">
-                        <div class="book">
-                            <h1 class="title">${book.title}</h1>
-                            <p class="author">Author: ${book.author}</p>
-                            <p class="isbn">ISBN: ${book.isbn}</p>
-                            <p class="language">Language: ${book.language}</p>
-                        </div>
+                <div class="col">
+                     <div class="book_main">
+                        <h1 class="title">${book.title}</h1>
+                        <p class="author">Author: ${book.author}</p>
+                        <p class="isbn">ISBN: ${book.isbn}</p>
+                        <p class="language">Language: ${book.language}</p>
                     </div>
+                </div>
                     `;
             bookDiv.innerHTML = bookContent;
             booksMain.appendChild(bookDiv);
@@ -98,7 +98,7 @@ function renderMovies(response) {
 }
 
 function createAccount() {
-   d = sendRequest('registrationForm', 'api/v1/register')
+    d = sendRequest('registrationForm', 'api/v1/register')
     console.log(d)
     setAuthToken(d.data.token)
 }

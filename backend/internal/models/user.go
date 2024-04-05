@@ -3,7 +3,7 @@ package models
 type User struct {
 	//gorm.Model
 
-	ID    int64
+	ID    uint32
 	Token string
 
 	Email          string

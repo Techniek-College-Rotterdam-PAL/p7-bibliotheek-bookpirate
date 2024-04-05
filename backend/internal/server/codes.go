@@ -53,7 +53,7 @@ var messages = map[Code]string{
 	DatabaseQueryError:           "Internal server error.",
 	UsernameAlreadyTaken:         "Username already in use",
 	IsbnAlreadyFound:             "Book with ISBN already added",
-	IsbnNotFound: "unkown Book",
+	IsbnNotFound:                 "Unknown Book",
 	InvalidEmail:                 "Invalid Email Domain",
 	InvalidPassword:              "Invalid Password",
 	EmailAlreadyUsed:             "Email already used",

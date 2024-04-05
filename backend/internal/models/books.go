@@ -1,6 +1,7 @@
 package models
 
 type Book struct {
+	Stock    int    `json:"stock,omitempty"`
 	Name     string `json:"title" binding:"required"`
 	Isbn     string `json:"isbn,omitempty" binding:"required"`
 	Author   string `json:"author,omitempty" binding:"required"`
