@@ -1,5 +1,10 @@
 package models
 
+type Admin struct {
+	ID    string
+	Token string
+}
+
 type User struct {
 	//gorm.Model
 

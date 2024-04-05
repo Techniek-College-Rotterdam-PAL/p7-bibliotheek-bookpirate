@@ -19,10 +19,6 @@ import (
 	"time"
 )
 
-func Home(c *gin.Context) {
-
-}
-
 func Register(c *gin.Context) {
 	mu.Lock()
 	defer mu.Unlock()
@@ -44,8 +40,9 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
+
 	email := strings.Split(regRequest.Email, "@")
-	if email[1] != TCRStudentDomain || len(email[0]) == 0 {
+	if len(email) <= 1 || email[1] != TCRStudentDomain || len(email[0]) == 0 {
 		c.JSON(http.StatusNotAcceptable, Message{
 			Code:    InvalidEmail,
 			Message: messages[InvalidEmail],
@@ -129,6 +126,16 @@ func Login(c *gin.Context) {
 	mu.Lock()
 	defer mu.Unlock()
 
+	c.Header(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
+
+	if c.Request.Method != http.MethodPost {
+		c.JSON(http.StatusMethodNotAllowed, Message{
+			Code:    MethodNotAllowed,
+			Message: messages[MethodNotAllowed],
+		})
+		return
+	}
+
 	var authRequest models.AuthenticationRequest
 	if err := c.ShouldBindJSON(&authRequest); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, Message{
@@ -145,7 +152,16 @@ func Login(c *gin.Context) {
 	//	})
 	//	return
 	//}
+
 	var user models.User
+	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotModified, Message{
+			Code:    AlreadyLoggedIn,
+			Message: messages[AlreadyLoggedIn],
+		})
+		return
+	}
+
 	if err := db.First(&user, &models.User{Email: authRequest.Email}).Error; err != nil {
 		switch {
 		case errors.Is(err, gorm.ErrRecordNotFound):
