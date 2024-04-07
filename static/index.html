@@ -38,30 +38,45 @@
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <!-- nav link aanpassen -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="index.html">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="static/book.html">Books</a>
+                    <a class="nav-link" href="#">Books</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Authors</a>
                 </li>
             </ul>
-            <div class="searchbar"><input class="form-control custom-radius" type="text"
-                                          placeholder="Search for books.." aria-label="search input in navbar"></div>
-            <div class="search_icon"><a class="add_button" href="#"><img alt="Add button icon" src="/static/images/plus-24px.svg"><span class="padding_left_15">Add book</span></a></div>
-            <div class="search_icon"><a href="#"><img alt="Profile button" src="/static/images/user-icon.png"><span
-                    class="padding_left_15">login</span></a></div>
+            <div class="form-inline w-auto">
+                <div class="dropdown">
+                        <input class="form-control custom-radius dropdown-toggle" data-toggle="dropdown" type="search"
+                               placeholder="Search for books.." aria-label="search for books" id="liveSearch"
+                               autocomplete="off" aria-expanded="false">
+                    <div class="dropdown-menu dropdown-menu-right" id="liveSearch-result">
+                        <div class="dropdown-item">No results found</div>
+                    </div>
+                </div>
+            </div>
+            <div class="search_icon">
+                <a class="add_button" href="#">
+                    <img alt="Add button icon" src="/static/images/plus-24px.svg">
+                    <span class="padding_left_15">Add Book</span>
+                </a>
+            </div>
+            <div class="search_icon">
+                <a href="#"><img alt="Profile button" src="/static/images/user-icon.png">
+                    <span class="padding_left_15">login</span>
+                </a>
+            </div>
         </div>
     </nav>
 </div>
 <!-- header section end -->
 <!-- banner section end -->
-<div class="banner_section layout_padding" style="height: 500px">
+<div class="banner_section layout_padding">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -93,11 +108,8 @@
         <div class="footer_menu">
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="static/book.html">Book</a></li>
-                <li><a href="#">TV</a></li>
-                <li><a href="#">Celebs</a></li>
-                <li><a href="#">Sports</a></li>
-                <li><a href="#">News</a></li>
+                <li><a href="#">Books</a></li>
+                <li><a href="#">Authors</a></li>
             </ul>
         </div>
         <div class="social_icon">
@@ -109,7 +121,7 @@
             </ul>
         </div>
     </div>
-    <div class="copyright_text">Copyright 2023 All Right Reserved By Marison & Tanay.</div>
+    <div class="copyright_text">© Copyright 2023 All Right Reserved By Marison & Tanay.</div>
 </footer>
 
 <!-- copyright section end -->

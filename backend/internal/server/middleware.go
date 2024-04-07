@@ -84,6 +84,10 @@ func FeedBooks(c *gin.Context) {
 	})
 }
 
+func ReserveBook(c *gin.Context) {
+
+}
+
 // AddBook adds book to database
 func AddBook(c *gin.Context) {
 	if c.Request.Method != http.MethodPost {
@@ -112,19 +116,21 @@ func AddBook(c *gin.Context) {
 
 	if err := db.Where("isbn = ?", book.Isbn).First(&book).Error; err == nil {
 		book.Stock++
-		db.Save(&book)
-		c.JSON(http.StatusOK, Message{
-			Code:    DatabaseQueryError,
-			Message: messages[DatabaseQueryError],
-		})
-		return
-	}
-	if err := db.Create(&book).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, Message{
-			Code:    DatabaseQueryError,
-			Message: messages[DatabaseQueryError],
-		})
-		return
+		if err = db.Where("isbn = ?", book.Isbn).Save(&book).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, Message{
+				Code:    DatabaseQueryError,
+				Message: messages[DatabaseQueryError],
+			})
+			return
+		}
+	} else {
+		if err = db.Create(&book).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, Message{
+				Code:    DatabaseQueryError,
+				Message: messages[DatabaseQueryError],
+			})
+			return
+		}
 	}
 
 	c.JSON(http.StatusOK, Message{
@@ -135,15 +141,15 @@ func AddBook(c *gin.Context) {
 
 // RemoveBook removes a book from the database if user is admin
 func RemoveBook(c *gin.Context) {
-	if c.Request.Method != http.MethodPost {
+	if c.Request.Method != http.MethodDelete {
 		c.JSON(http.StatusMethodNotAllowed, Message{
 			Code:    MethodNotAllowed,
 			Message: messages[MethodNotAllowed],
 		})
 		return
 	}
-	var book models.DeleteBook
-	if err := c.ShouldBindJSON(&book); err != nil {
+	var removeRequest models.DeleteBook
+	if err := c.ShouldBindJSON(&removeRequest); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, Message{
 			Code:    MalformedContent,
 			Message: messages[MalformedContent],
@@ -152,17 +158,31 @@ func RemoveBook(c *gin.Context) {
 	}
 
 	var user models.User
-	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err == nil {
+	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, Message{
 			Code:    InvalidSession,
 			Message: messages[InvalidSession],
 		})
 		return
 	}
-	//if err := db.Delete().First().Error; err == nil {
-	//
-	//}
+	var admin models.Admin
+	if err := db.Where("ID = ?", user.ID).First(&admin).Error; err != nil {
+		c.JSON(http.StatusUnauthorized, Message{
+			Code:    InsufficientPermissions,
+			Message: messages[InsufficientPermissions],
+		})
+		return
+	}
+	var book models.Book
+	if err := db.Where("isbn = ?", removeRequest.Isbn).Delete(&book).Error; err == nil {
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    IsbnNotFound,
+			Message: messages[IsbnNotFound],
+		})
+		return
+	}
 
+	c.JSON(http.StatusOK, nil)
 }
 
 func countBooks(isbn string) (int64, error) {
