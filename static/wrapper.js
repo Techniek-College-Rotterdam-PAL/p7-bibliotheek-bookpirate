@@ -82,24 +82,9 @@ function renderMovies(response) {
             // language=HTML
             bookDiv.innerHTML = `
                           <div class="card mb-4 shadow-sm" style="background: #3c0e0e; border-radius: 20px">
-                            <!-- Thumbnail -->
+                            <a class="#" href="#">
                                 <img class="card-img-top" src="static/images/no-image.png" alt="Thumbnail" style="height: 220px; width: 100%; display: block; border-radius: 20px"
-                            </div>
-                            <!-- text -->
-                            <div class="card-body">
-                                <h5 class="text-center pb-0" style="color: white">${book.title}</h5>
-                                <p class="card-text" style="color: white">
-                                Author: ${book.author}<br>
-                                Language: ${book.language}<br>
-                                ISBN: ${book.isbn}
-                                </p>
-                            </div>
-                            <!-- Buttons -->
-                            <div class="d-flex justify-content-center align-items-center pb-1">
-                                <div class="btn-group">
-                                <button class="btn btn-sm btn-outline-secondary" style="background: #ffc107" type="button">View</button>
-                                <button class="btn btn-sm btn-outline-secondary" style="background: #ffc107" type="button">Edit</button>
-                            </div>
+                            </a>
                           </div>
                     `;
             booksMain.appendChild(bookDiv);
