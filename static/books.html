@@ -30,7 +30,7 @@
           media="screen">
 </head>
 <body>
-<!-- header section start -->
+
 <div class="header_section">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="logo" href="index.html"><img src="/static/images/bp.svg" width="50" height="50"></a>
@@ -74,4 +74,58 @@
         </div>
     </nav>
 </div>
-<!-- header section end -->
+
+<main role="main">
+    <div class="books py-5 bg-light">
+        <div class="container">
+            <div class="row pt-3" id="books_main">
+                <script>
+                    window.onload = function () {
+                        fetchMovies();
+                    };
+                </script>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer_section layout_padding">
+    <div class="container">
+        <div class="footer_menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Books</a></li>
+                <li><a href="#">Authors</a></li>
+            </ul>
+        </div>
+        <div class="social_icon">
+            <ul>
+                <li><a href="#"><img src="static/images/fb-icon.png"></a></li>
+                <li><a href="#"><img src="static/images/twitter-icon.png"></a></li>
+                <li><a href="#"><img src="static/images/linkedin-icon.png"></a></li>
+                <li><a href="#"><img src="static/images/instagram-icon.png"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="copyright_text">© Copyright 2023 All Right Reserved By Marison & Tanay.</div>
+</footer>
+
+script src="static/wrapper.js"></script>
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/popper.min.js"></script>
+
+<script src="static/js/bootstrap.bundle.min.js"></script>
+<script src="static/js/jquery-3.0.0.min.js"></script>
+<!-- sidebar -->
+<script src="static/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="static/js/custom.js"></script>
+<!-- javascript -->
+<script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+<script>
+    $('#datepicker').datepicker({
+        uiLibrary: 'bootstrap4'
+    });
+</script>
+</body>
+</html>
