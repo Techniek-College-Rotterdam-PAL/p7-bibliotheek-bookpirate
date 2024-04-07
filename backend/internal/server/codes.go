@@ -24,15 +24,17 @@ const (
 	UserNotFound
 	InvalidAuthenticationRequest
 	DatabaseQueryError
+	InsufficientPermissions
 	UsernameAlreadyTaken
 	EmailAlreadyUsed
+	AlreadyLoggedIn
 	InvalidEmail
 	InvalidPassword
 	InvalidAuthentication
 	IsbnAlreadyFound
 	IsbnNotFound
 	SuccessfulAuthentication
-	SuccessfulDeauthentication
+	SuccessfulDeAuthentication
 	SuccessfulRegistration
 	SuccessfulInsert
 	UnsuccessfulRegistration
@@ -51,15 +53,17 @@ var messages = map[Code]string{
 	UserNotFound:                 "User not found.",
 	InvalidAuthenticationRequest: "Malformed body or invalid content.",
 	DatabaseQueryError:           "Internal server error.",
+	InsufficientPermissions:      "User does not have permission",
 	UsernameAlreadyTaken:         "Username already in use",
 	IsbnAlreadyFound:             "Book with ISBN already added",
-	IsbnNotFound: "unkown Book",
+	IsbnNotFound:                 "Unknown Book",
 	InvalidEmail:                 "Invalid Email Domain",
 	InvalidPassword:              "Invalid Password",
 	EmailAlreadyUsed:             "Email already used",
+	AlreadyLoggedIn:              "Already logged in",
 	InvalidAuthentication:        "invalid email or password",
 	SuccessfulAuthentication:     "Successfully authenticated.",
-	SuccessfulDeauthentication:   "Successfully deauthenticated.",
+	SuccessfulDeAuthentication:   "Successfully deauthenticated.",
 	SuccessfulRegistration:       "Successfully registered.",
 	SuccessfulInsert:             "Successfully added book.",
 	UnsuccessfulRegistration:     "Internal Server Error.",

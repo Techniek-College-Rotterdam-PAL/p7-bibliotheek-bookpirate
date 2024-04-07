@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"net/http"
@@ -17,10 +18,6 @@ import (
 	"strings"
 	"time"
 )
-
-func Home(c *gin.Context) {
-
-}
 
 func Register(c *gin.Context) {
 	mu.Lock()
@@ -43,8 +40,9 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
+
 	email := strings.Split(regRequest.Email, "@")
-	if email[1] != TCRStudentDomain || len(email[0]) == 0 {
+	if len(email) <= 1 || email[1] != TCRStudentDomain || len(email[0]) == 0 {
 		c.JSON(http.StatusNotAcceptable, Message{
 			Code:    InvalidEmail,
 			Message: messages[InvalidEmail],
@@ -84,7 +82,7 @@ func Register(c *gin.Context) {
 		return
 	}
 	user = models.User{ // only for now.
-		ID:             util.GenerateSnowflake(time.Now()),
+		ID:             uuid.New().ID(),
 		Email:          regRequest.Email,
 		Username:       regRequest.Username,
 		HashedPassword: string(hashedPassword),
@@ -117,7 +115,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, Message{
+	c.JSON(http.StatusCreated, Message{
 		Code:    SuccessfulRegistration,
 		Message: messages[SuccessfulRegistration],
 		Data:    data,
@@ -127,6 +125,16 @@ func Register(c *gin.Context) {
 func Login(c *gin.Context) {
 	mu.Lock()
 	defer mu.Unlock()
+
+	c.Header(fiber.HeaderContentType, fiber.MIMEApplicationJSONCharsetUTF8)
+
+	if c.Request.Method != http.MethodPost {
+		c.JSON(http.StatusMethodNotAllowed, Message{
+			Code:    MethodNotAllowed,
+			Message: messages[MethodNotAllowed],
+		})
+		return
+	}
 
 	var authRequest models.AuthenticationRequest
 	if err := c.ShouldBindJSON(&authRequest); err != nil {
@@ -146,6 +154,14 @@ func Login(c *gin.Context) {
 	//}
 
 	var user models.User
+	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err != nil {
+		c.JSON(http.StatusNotModified, Message{
+			Code:    AlreadyLoggedIn,
+			Message: messages[AlreadyLoggedIn],
+		})
+		return
+	}
+
 	if err := db.First(&user, &models.User{Email: authRequest.Email}).Error; err != nil {
 		switch {
 		case errors.Is(err, gorm.ErrRecordNotFound):
