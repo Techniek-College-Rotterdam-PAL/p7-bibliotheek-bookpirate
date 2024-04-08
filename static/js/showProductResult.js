@@ -11,7 +11,7 @@ $(document).ready(function(){
             }
         });
     }
-    $('#search').keyup(function(){
+    $('#liveSearch').keyup(function(){
         var search = $(this).val();
         if (search != '') {
             load_data(search);
