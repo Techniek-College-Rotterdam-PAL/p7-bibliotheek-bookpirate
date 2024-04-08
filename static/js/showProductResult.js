@@ -11,6 +11,8 @@ $(document).ready(function(){
             }
         });
     }
+
+    // gets input
     $('#liveSearch').keyup(function(){
         var search = $(this).val();
         if (search !== '') {

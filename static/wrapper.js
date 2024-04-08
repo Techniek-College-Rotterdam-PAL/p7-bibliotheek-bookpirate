@@ -48,7 +48,7 @@ function sendRequest(elementId, endPoint) {
         .catch(error => {
             console.error("Request failed:", error);
         });
-    return resp
+    return resp;
 }
 
 
@@ -114,25 +114,4 @@ function getAuthToken() {
 
 function removeAuthToken() {
     localStorage.removeItem('bp_token');
-}
-
-function GetsearchResults(response) {
-    const liveSearchResult = document.getElementById('liveSearchResult');
-    liveSearchResult.innerHTML = '';
-    const data = response.data;
-
-    if (Array.isArray(data)) {
-        data.forEach(book => {
-            const liveDiv = document.createElement('div');
-            liveDiv.className = 'dropdown-item';
-
-            // language=HTML
-            liveDiv.innerHTML = `
-                <a href="">${book.title}</a>
-            `;
-            liveSearchResult.appendChild(liveDiv);
-        });
-    } else {
-        console.error('Data is not an array:', data);
-    }
 }
