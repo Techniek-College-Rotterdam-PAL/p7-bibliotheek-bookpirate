@@ -42,6 +42,13 @@ func Register(c *gin.Context) {
 	}
 
 	email := strings.Split(regRequest.Email, "@")
+	if email[1] == TCRDocentDomain {
+		c.JSON(http.StatusNotAcceptable, Message{
+			Code:    AdminNeeded,
+			Message: messages[AdminNeeded],
+		})
+		return
+	}
 	if len(email) <= 1 || email[1] != TCRStudentDomain || len(email[0]) == 0 {
 		c.JSON(http.StatusNotAcceptable, Message{
 			Code:    InvalidEmail,
