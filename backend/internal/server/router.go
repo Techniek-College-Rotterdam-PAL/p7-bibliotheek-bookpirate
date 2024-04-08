@@ -43,6 +43,9 @@ func Run() {
 	router.GET("/register", func(c *gin.Context) {
 		c.File("../../../static/register.html")
 	})
+	router.GET("/contact-owner", func(c *gin.Context) {
+		c.File("../../../static/contact-owner.html")
+	})
 
 	for s, middleware := range middleWares {
 		info := strings.Split(s, ":")

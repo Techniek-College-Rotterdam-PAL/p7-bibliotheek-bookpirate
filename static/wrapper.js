@@ -36,11 +36,17 @@ function sendRequest(elementId, endPoint) {
         },
         body: JSON.stringify(jsonData),
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            errorMessage(data)
+            // if (!data === null) {
+            //     console.log("fihrbefjuon")
+            //     errorMessage(data)
+            // }
+            if (data.message === "Admin Needed") {
+                window.location.replace("http://127.0.0.1:8080/contact-owner")
             }
-            resp = response.json();
         })
         .then(data => {
             console.log("Request successful:", data);
@@ -82,8 +88,8 @@ function renderMovies(response) {
             // language=HTML
             bookDiv.innerHTML = `
                 <div class="card mb-4 shadow-sm" style="background: #3c0e0e; border-radius: 20px">
-                    <a class="#" href="#"
-                    <img class="card-img-top" src="static/images/no-image.png" alt="Thumbnail"
+                    <a class="#" href="#">
+                    <img class="card-img-top" src="static/images/no-image.svg"Thumbnail"
                          style="height: 220px; width: 100%; display: block; border-radius: 20px">
                     <!-- text -->
                     <div class="card-body">
@@ -117,3 +123,22 @@ function getAuthToken() {
 function removeAuthToken() {
     localStorage.removeItem('bp_token');
 }
+
+function errorMessage(data) {
+    const errorheader = document.getElementById('error_header');
+    errorheader.innerHTML = '';
+    const Div = document.createElement('div');
+    Div.className = 'col-md-4';
+
+    // language=HTML
+    Div.innerHTML = `
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>${data.code}n</strong> ${data.message}n.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    errorheader.appendChild(Div);
+}
+

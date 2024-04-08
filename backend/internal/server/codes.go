@@ -8,6 +8,7 @@ type Code uint32
 
 const (
 	TCRStudentDomain    string = "student.zadkine.nl"
+	TCRDocentDomain     string = "tcrmbo.nl"
 	authorizationHeader string = "authorization"
 	defaultAuthLength   int    = 32
 )
@@ -29,6 +30,7 @@ const (
 	EmailAlreadyUsed
 	AlreadyLoggedIn
 	InvalidEmail
+	AdminNeeded
 	InvalidPassword
 	InvalidAuthentication
 	IsbnAlreadyFound
@@ -58,6 +60,7 @@ var messages = map[Code]string{
 	IsbnAlreadyFound:             "Book with ISBN already added",
 	IsbnNotFound:                 "Unknown Book",
 	InvalidEmail:                 "Invalid Email Domain",
+	AdminNeeded:                  "Admin Needed",
 	InvalidPassword:              "Invalid Password",
 	EmailAlreadyUsed:             "Email already used",
 	AlreadyLoggedIn:              "Already logged in",
