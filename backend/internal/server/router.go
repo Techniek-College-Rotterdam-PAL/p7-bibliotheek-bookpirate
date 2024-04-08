@@ -40,8 +40,14 @@ func Run() {
 	router.GET("/", func(c *gin.Context) {
 		c.File("../../../static/index.html")
 	})
+	router.GET("/books", func(c *gin.Context) {
+		c.File("../../../static/books.html")
+	})
 	router.GET("/register", func(c *gin.Context) {
 		c.File("../../../static/register.html")
+	})
+	router.GET("/login", func(c *gin.Context) {
+		c.File("../../../static/login.html")
 	})
 
 	for s, middleware := range middleWares {
