@@ -161,24 +161,16 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	//if err := validator.New().Struct(authRequest); err != nil {
-	//	c.JSON(http.StatusUnprocessableEntity, Message{
-	//		Code:    InvalidAuthenticationRequest,
-	//		Message: messages[InvalidAuthenticationRequest],
-	//	})
-	//	return
-	//}
-
-	var user models.User
-	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err != nil {
-		c.JSON(http.StatusNotModified, Message{
-			Code:    AlreadyLoggedIn,
-			Message: messages[AlreadyLoggedIn],
+	if err := validator.New().Struct(&authRequest); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, Message{
+			Code:    InvalidEmail,
+			Message: messages[InvalidEmail],
 		})
 		return
 	}
 
-	if err := db.First(&user, &models.User{Email: authRequest.Email}).Error; err != nil {
+	var user models.User
+	if err := db.First(&user, &models.User{Email: authRequest.Email, Username: authRequest.Username}).Error; err != nil {
 		switch {
 		case errors.Is(err, gorm.ErrRecordNotFound):
 			c.JSON(http.StatusNotFound, Message{
@@ -193,6 +185,28 @@ func Login(c *gin.Context) {
 		}
 		return
 	}
+	if user.Token == c.GetHeader(authorizationHeader) && len(user.Token) >= defaultAuthLength {
+		c.JSON(http.StatusOK, Message{
+			Code:    AlreadyLoggedIn,
+			Message: messages[AlreadyLoggedIn],
+		})
+		return
+	} else if c.GetHeader(authorizationHeader) != "" {
+		if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err == nil {
+			c.JSON(http.StatusUnauthorized, Message{
+				Code:    InvalidSession,
+				Message: messages[InvalidSession],
+			})
+		} else {
+			c.JSON(http.StatusOK, Message{
+				Code:    AlreadyLoggedInDifferentAccount,
+				Message: messages[AlreadyLoggedInDifferentAccount],
+			})
+		}
+		return
+
+	}
+
 	if !(user.Email == authRequest.Email && user.Username == authRequest.Username) {
 		c.JSON(http.StatusUnauthorized, Message{
 			Code:    InvalidAuthenticationRequest,
@@ -219,8 +233,8 @@ func Login(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, Message{
-		Code:    SuccessfulRegistration,
-		Message: messages[SuccessfulRegistration],
+		Code:    SuccessfulAuthentication,
+		Message: messages[SuccessfulAuthentication],
 		Data:    data,
 	})
 }

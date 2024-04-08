@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 	"server/internal/models"
 )
@@ -24,19 +25,28 @@ func SearchBooks(c *gin.Context) {
 		})
 		return
 	}
-
-	searchData, ok := db.Get(searchRequest.Name)
-	if !ok {
+	if err := validator.New().Struct(&searchRequest); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, Message{
+			Code:    InvalidEmail,
+			Message: messages[InvalidEmail],
+		})
+		return
+	}
+	var books []models.Book
+	if err := db.Find(&books, &models.Book{Name: searchRequest.Name}).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, Message{
 			Code:    DatabaseQueryError,
 			Message: messages[DatabaseQueryError],
 		})
+		return
 	}
-	data, err := json.Marshal(searchData)
+
+	data, err := json.Marshal(books)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, Message{
 			Code:    InternalServerError,
 			Message: messages[InternalServerError],
+			Data:    []byte(err.Error()),
 		})
 		return
 	}
@@ -84,6 +94,7 @@ func FeedBooks(c *gin.Context) {
 	})
 }
 
+// ReserveBook users cant reserve a book
 func ReserveBook(c *gin.Context) {
 	if c.Request.Method != http.MethodPost {
 		c.JSON(http.StatusMethodNotAllowed, Message{
@@ -108,6 +119,24 @@ func ReserveBook(c *gin.Context) {
 		})
 		return
 	}
+	if err := db.Where("isbn = ?", book.Isbn).First(&book).Error; err == nil {
+		book.Stock--
+		if err = db.Where("isbn = ?", book.Isbn).Save(&book).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, Message{
+				Code:    DatabaseQueryError,
+				Message: messages[DatabaseQueryError],
+			})
+			return
+		}
+	} else {
+		if err = db.Create(&book).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, Message{
+				Code:    DatabaseQueryError,
+				Message: messages[DatabaseQueryError],
+			})
+			return
+		}
+	}
 
 }
 
@@ -129,7 +158,7 @@ func AddBook(c *gin.Context) {
 		return
 	}
 	var user models.User
-	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err == nil {
+	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, Message{
 			Code:    InvalidSession,
 			Message: messages[InvalidSession],

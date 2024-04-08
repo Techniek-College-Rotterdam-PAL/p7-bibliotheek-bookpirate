@@ -29,6 +29,7 @@ const (
 	UsernameAlreadyTaken
 	EmailAlreadyUsed
 	AlreadyLoggedIn
+	AlreadyLoggedInDifferentAccount
 	InvalidEmail
 	AdminNeeded
 	InvalidPassword
@@ -52,25 +53,26 @@ var messages = map[Code]string{
 	Forbidden:           "Forbidden.",
 	NotFound:            "Not Found",
 
-	UserNotFound:                 "User not found.",
-	InvalidAuthenticationRequest: "Malformed body or invalid content.",
-	DatabaseQueryError:           "Internal server error.",
-	InsufficientPermissions:      "User does not have permission",
-	UsernameAlreadyTaken:         "Username already in use",
-	IsbnAlreadyFound:             "Book with ISBN already added",
-	IsbnNotFound:                 "Unknown Book",
-	InvalidEmail:                 "Invalid Email Domain",
-	AdminNeeded:                  "Admin Needed",
-	InvalidPassword:              "Invalid Password",
-	EmailAlreadyUsed:             "Email already used",
-	AlreadyLoggedIn:              "Already logged in",
-	InvalidAuthentication:        "invalid email or password",
-	SuccessfulAuthentication:     "Successfully authenticated.",
-	SuccessfulDeAuthentication:   "Successfully deauthenticated.",
-	SuccessfulRegistration:       "Successfully registered.",
-	SuccessfulInsert:             "Successfully added book.",
-	UnsuccessfulRegistration:     "Internal Server Error.",
-	InvalidSession:               "Invalid session.",
+	UserNotFound:                    "User not found.",
+	InvalidAuthenticationRequest:    "Malformed body or invalid content.",
+	DatabaseQueryError:              "Internal server error.",
+	InsufficientPermissions:         "User does not have permission",
+	UsernameAlreadyTaken:            "Username already in use",
+	IsbnAlreadyFound:                "Book with ISBN already added",
+	IsbnNotFound:                    "Unknown Book",
+	InvalidEmail:                    "Invalid Email Domain",
+	AdminNeeded:                     "Admin Needed",
+	InvalidPassword:                 "Invalid Password",
+	EmailAlreadyUsed:                "Email already used",
+	AlreadyLoggedIn:                 "Already logged in",
+	AlreadyLoggedInDifferentAccount: "Already logged into different account, please logout to login into different account",
+	InvalidAuthentication:           "invalid email or password",
+	SuccessfulAuthentication:        "Successfully authenticated.",
+	SuccessfulDeAuthentication:      "Successfully deauthenticated.",
+	SuccessfulRegistration:          "Successfully registered.",
+	SuccessfulInsert:                "Successfully added book.",
+	UnsuccessfulRegistration:        "Internal Server Error.",
+	InvalidSession:                  "Invalid session.",
 }
 
 type Message struct {
