@@ -27,9 +27,9 @@ function sendRequest(elementId, endPoint) {
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
-    var resp= {}
+    var resp = {}
     // Use the fetch API to send a POST request with JSON data
-     fetch("http://127.0.0.1:8080/" + endPoint, {
+    fetch("http://127.0.0.1:8080/" + endPoint, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -58,7 +58,7 @@ function fetchMovies() {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ list: 30 })
+        body: JSON.stringify({list: 30})
     })
         .then(response => response.json())
         .then(data => {
@@ -81,27 +81,18 @@ function renderMovies(response) {
 
             // language=HTML
             bookDiv.innerHTML = `
-                          <div class="card mb-4 shadow-sm" style="background: #3c0e0e; border-radius: 20px">
-                            <!-- Thumbnail -->
-                                <img class="card-img-top" src="static/images/no-image.png" alt="Thumbnail" style="height: 220px; width: 100%; display: block; border-radius: 20px"
-                            </div>
-                            <!-- text -->
-                            <div class="card-body">
-                                <h5 class="text-center pb-0" style="color: white">${book.title}</h5>
-                                <p class="card-text" style="color: white">
-                                Author: ${book.author}<br>
-                                Language: ${book.language}<br>
-                                ISBN: ${book.isbn}
-                                </p>
-                            </div>
-                            <!-- Buttons -->
-                            <div class="d-flex justify-content-center align-items-center pb-1">
-                                <div class="btn-group">
-                                <button class="btn btn-sm btn-outline-secondary" style="background: #ffc107" type="button">View</button>
-                                <button class="btn btn-sm btn-outline-secondary" style="background: #ffc107" type="button">Edit</button>
-                            </div>
-                          </div>
-                    `;
+                <div class="card mb-4 shadow-sm" style="background: #3c0e0e; border-radius: 20px">
+                    <a class="#" href="#"
+                    <img class="card-img-top" src="static/images/no-image.png" alt="Thumbnail"
+                         style="height: 220px; width: 100%; display: block; border-radius: 20px">
+                    <!-- text -->
+                    <div class="card-body">
+                        <h5 class="text-center pb-0" style="color: white">${book.title}</h5>
+                        <p class="card-text" style="color: white">Available: x</p>
+                    </div>
+                    </a>
+                </div>
+            `;
             booksMain.appendChild(bookDiv);
         });
     } else {
@@ -110,7 +101,7 @@ function renderMovies(response) {
 }
 
 function createAccount() {
-   d = sendRequest('registrationForm', 'api/v1/register')
+    d = sendRequest('registrationForm', 'api/v1/register')
     console.log(d)
     setAuthToken(d.data.token)
 }
