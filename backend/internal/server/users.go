@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -37,6 +38,14 @@ func Register(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, Message{
 			Code:    InvalidAuthenticationRequest,
 			Message: messages[InvalidAuthenticationRequest],
+		})
+		return
+	}
+
+	if err := validator.New().Struct(&regRequest); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, Message{
+			Code:    InvalidEmail,
+			Message: messages[InvalidEmail],
 		})
 		return
 	}

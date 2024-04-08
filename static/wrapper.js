@@ -132,8 +132,8 @@ function errorMessage(data) {
 
     // language=HTML
     Div.innerHTML = `
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>${data.code}n</strong> ${data.message}n.
+        <div style="width: 1080px" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>${data.code}</strong> ${data.message}.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
