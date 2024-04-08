@@ -1,13 +1,13 @@
 $(document).ready(function(){
     function load_data(query) {
         $.ajax({
-            url:            "../src/liveSearch.php",
+            url:            "http://127.0.0.1:8080/api/v1/fetch-books",
             type:           "POST",
             data:           {query:query},
             success:        function(data)
             {
-                $('#invoice-result').html('');
-                $('#invoice-result').html(data);
+                $('#liveSearch-result').html('');
+                $('#liveSearch-result').html(data);
             }
         });
     }
