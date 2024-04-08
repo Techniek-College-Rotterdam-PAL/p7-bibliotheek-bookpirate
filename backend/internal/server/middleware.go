@@ -85,6 +85,29 @@ func FeedBooks(c *gin.Context) {
 }
 
 func ReserveBook(c *gin.Context) {
+	if c.Request.Method != http.MethodPost {
+		c.JSON(http.StatusMethodNotAllowed, Message{
+			Code:    MethodNotAllowed,
+			Message: messages[MethodNotAllowed],
+		})
+		return
+	}
+	var book models.Book
+	if err := c.ShouldBindJSON(&book); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, Message{
+			Code:    MalformedContent,
+			Message: messages[MalformedContent],
+		})
+		return
+	}
+	var user models.User
+	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err == nil {
+		c.JSON(http.StatusUnauthorized, Message{
+			Code:    InvalidSession,
+			Message: messages[InvalidSession],
+		})
+		return
+	}
 
 }
 
@@ -113,7 +136,14 @@ func AddBook(c *gin.Context) {
 		})
 		return
 	}
-
+	var admin models.Admin
+	if err := db.Where("ID = ?", user.ID).First(&admin).Error; err != nil {
+		c.JSON(http.StatusUnauthorized, Message{
+			Code:    InsufficientPermissions,
+			Message: messages[InsufficientPermissions],
+		})
+		return
+	}
 	if err := db.Where("isbn = ?", book.Isbn).First(&book).Error; err == nil {
 		book.Stock++
 		if err = db.Where("isbn = ?", book.Isbn).Save(&book).Error; err != nil {

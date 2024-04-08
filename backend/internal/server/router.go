@@ -27,7 +27,7 @@ func Run() {
 		if strings.Contains(c.Request.RequestURI, "api") || c.Request.Method != http.MethodGet {
 			c.JSON(http.StatusBadRequest, Message{})
 		} else {
-			c.File("../../../static/errorpage.html")
+			c.File("../../../static/error-page.html")
 		}
 	})
 	router.NoMethod(func(c *gin.Context) {

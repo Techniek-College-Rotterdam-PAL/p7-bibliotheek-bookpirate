@@ -27,9 +27,9 @@ function sendRequest(elementId, endPoint) {
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
-    var resp= {}
+    var resp = {}
     // Use the fetch API to send a POST request with JSON data
-     fetch("http://127.0.0.1:8080/" + endPoint, {
+    fetch("http://127.0.0.1:8080/" + endPoint, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -87,8 +87,18 @@ function renderMovies(response) {
                             </div>
                             <!-- text -->
                             <div class="card-body">
-                                <p class="h5 text-center pb-0" style="color: white">${book.title}</p>
-                                <p class="text-center">Available: x</p>
+                                <h5 class="text-center pb-0" style="color: white">${book.title}</h5>
+                                <p class="card-text" style="color: white">
+                                Author: ${book.author}<br>
+                                Language: ${book.language}<br>
+                                ISBN: ${book.isbn}
+                                </p>
+                            </div>
+                            <!-- Buttons -->
+                            <div class="d-flex justify-content-center align-items-center pb-1">
+                                <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-secondary" style="background: #ffc107" type="button">View</button>
+                                <button class="btn btn-sm btn-outline-secondary" style="background: #ffc107" type="button">Edit</button>
                             </div>
                           </div>
                     `;
