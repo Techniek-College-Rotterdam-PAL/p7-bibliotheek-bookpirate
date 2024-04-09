@@ -12,6 +12,12 @@ html, body {
     padding: 1rem;
 }
 
+.form-register input, .form-register button,
+.form-register label {
+    max-width: 280px;
+    margin-left: 3%;
+}
+
 main {
     background: #3c0e0e;
     border-radius: 20px;
@@ -28,8 +34,10 @@ main {
     border-bottom-right-radius: 0;
 }
 
-.form-register input[type="email"] {
+.form-register input[type="text"] {
     margin: -1px;
+    border-radius: 0;
+    margin-left: 3%;
 }
 
 .form-register input[type="password"] {
@@ -37,8 +45,7 @@ main {
     border-radius: 0;
 }
 
-#floatingPassword2 {
-    margin-bottom: 10px;
+.form-register button {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
