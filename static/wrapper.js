@@ -90,12 +90,11 @@ function renderMovies(response) {
             bookDiv.innerHTML = `
                 <div class="card mb-4 shadow-sm" style="background: #3c0e0e; border-radius: 20px">
                     <a class="#" href="#">
-                    <img class="card-img-top" src="static/images/no-image.svg"Thumbnail"
+                    <img class="card-img-top" src="static/images/no-image.svg" alt="Thumbnail"
                          style="height: 220px; width: 100%; display: block; border-radius: 20px">
                     <!-- text -->
                     <div class="card-body">
                         <h5 class="text-center pb-0" style="color: white">${book.title}</h5>
-                        <p class="card-text" style="color: white">Available: x</p>
                     </div>
                     </a>
                 </div>
