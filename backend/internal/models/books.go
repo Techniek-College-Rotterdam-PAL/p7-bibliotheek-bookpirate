@@ -2,14 +2,14 @@ package models
 
 type Book struct {
 	Stock    int    `json:"stock,omitempty"`
-	Name     string `json:"title" binding:"required"`
-	Isbn     string `json:"isbn,omitempty" binding:"required"`
-	Author   string `json:"author,omitempty" binding:"required"`
+	Name     string `json:"title" validate:"required" binding:"required"`
+	Isbn     string `json:"isbn,omitempty" validate:"required" binding:"required"`
+	Author   string `json:"author,omitempty" validate:"required" binding:"required"`
 	Language string `json:"language,omitempty"`
 }
 
 type SearchRequest struct {
-	Book
+	Name string `json:"title" validate:"required" binding:"required"`
 }
 
 type DeleteBook struct {

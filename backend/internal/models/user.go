@@ -17,9 +17,9 @@ type User struct {
 }
 
 type RegistrationRequest struct {
-	Username string `json:"username" validate:"required,username" binding:"required"`
+	Username string `json:"username" validate:"required" binding:"required"`
 	Email    string `json:"email" validate:"required,email" binding:"required"`
-	Password string `json:"password" validate:"required,password" binding:"required"`
+	Password string `json:"password" validate:"required" binding:"required"`
 }
 
 type RegistrationResponse struct {

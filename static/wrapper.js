@@ -90,11 +90,12 @@ function renderMovies(response) {
             bookDiv.innerHTML = `
                 <div class="card mb-4 shadow-sm" style="background: #3c0e0e; border-radius: 20px">
                     <a class="#" href="#">
-                    <img class="card-img-top" src="static/images/no-image.svg" alt="Thumbnail"
+                    <img class="card-img-top" src="static/images/no-image.svg"Thumbnail"
                          style="height: 220px; width: 100%; display: block; border-radius: 20px">
                     <!-- text -->
                     <div class="card-body">
                         <h5 class="text-center pb-0" style="color: white">${book.title}</h5>
+                        <p class="card-text" style="color: white">Available: x</p>
                     </div>
                     </a>
                 </div>
@@ -123,3 +124,22 @@ function getAuthToken() {
 function removeAuthToken() {
     localStorage.removeItem('bp_token');
 }
+
+function errorMessage(data) {
+    const errorheader = document.getElementById('error_header');
+    errorheader.innerHTML = '';
+    const Div = document.createElement('div');
+    Div.className = 'col-md-4';
+
+    // language=HTML
+    Div.innerHTML = `
+        <div style="width: 1080px" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>${data.code}</strong> ${data.message}.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    `;
+    errorheader.appendChild(Div);
+}
+
