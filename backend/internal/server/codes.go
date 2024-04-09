@@ -65,7 +65,7 @@ var messages = map[Code]string{
 	InvalidPassword:                 "Invalid Password",
 	EmailAlreadyUsed:                "Email already used",
 	AlreadyLoggedIn:                 "Already logged in",
-	AlreadyLoggedInDifferentAccount: "Already logged into different account, please logout to login into different account",
+	AlreadyLoggedInDifferentAccount: "Already logged into different account, please logout to login.html into different account",
 	InvalidAuthentication:           "invalid email or password",
 	SuccessfulAuthentication:        "Successfully authenticated.",
 	SuccessfulDeAuthentication:      "Successfully deauthenticated.",

@@ -1,5 +1,10 @@
 html, body {
     height: 100%;
+    background: rgb(60,14,14);
+    background: -moz-linear-gradient(20deg, rgba(60,14,14,1) 20%, rgba(255,255,255,1) 75%, rgba(242,239,239,1) 100%);
+    background: -webkit-linear-gradient(20deg, rgba(60,14,14,1) 20%, rgba(255,255,255,1) 75%, rgba(242,239,239,1) 100%);
+    background: linear-gradient(20deg, rgba(60,14,14,1) 20%, rgba(255,255,255,1) 75%, rgba(242,239,239,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3c0e0e",endColorstr="#f2efef",GradientType=1);
 }
 
 .form-register {
