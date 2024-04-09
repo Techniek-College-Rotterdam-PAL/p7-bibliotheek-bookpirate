@@ -2,9 +2,20 @@ html, body {
     height: 100%;
 }
 
+#error_header {
+    width: 1000px;
+    margin: 0 auto;
+}
+
 .form-register {
     max-width: 330px;
     padding: 1rem;
+}
+
+main {
+    background: #3c0e0e;
+    border-radius: 20px;
+    width: 70vh
 }
 
 .form-register .form-floating:focus-within {
