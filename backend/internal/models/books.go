@@ -19,6 +19,12 @@ type InsertBook struct {
 	Book
 }
 
+type Reservation struct {
+	Id           uint32 `json:"id"`
+	ReservedIsbn string `json:"isbn" binding:"required"`
+	TimeStamp    int64  `json:"time_stamp"`
+}
+
 type FeedRequest struct {
 	Limit int `json:"list"`
 }
