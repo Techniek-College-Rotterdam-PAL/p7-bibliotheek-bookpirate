@@ -90,7 +90,7 @@ function renderMovies(response) {
             bookDiv.innerHTML = `
                 <div class="card mb-4 shadow-sm" style="background: #3c0e0e; border-radius: 20px">
                     <a class="#" href="#">
-                    <img class="card-img-top" src="static/images/no-image.svg"Thumbnail"
+                    <img class="card-img-top" src="static/images/no-image.svg" alt-label="Thumbnail"
                          style="height: 220px; width: 100%; display: block; border-radius: 20px">
                     <!-- text -->
                     <div class="card-body">
