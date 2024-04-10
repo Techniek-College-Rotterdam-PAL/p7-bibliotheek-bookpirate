@@ -45,7 +45,7 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="book.html">Books</a>
+                    <a class="nav-link" href="books.html">Books</a>
                 </li>
             </ul>
             <div class="searchbar"><input class="form-control custom-radius" type="text"
@@ -57,13 +57,30 @@
     </nav>
 </div>
 
+<main role="main">
+    <div class="books py-5 bg-light">
+        <div class="text-center">
+            <h1 class="h1">Books</h1>
+        </div>
+
+        <div class="container">
+            <div class="row pt-3" id="books_main">
+                <script>
+                    window.onload = function () {
+                        fetchMovies();
+                    };
+                </script>
+            </div>
+        </div>
+    </div>
+</main>
+
 <footer class="footer_section layout_padding">
     <div class="container">
         <div class="footer_menu">
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Books</a></li>
-                <li><a href="#">Authors</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="books.html">Books</a></li>
             </ul>
         </div>
         <div class="social_icon">
