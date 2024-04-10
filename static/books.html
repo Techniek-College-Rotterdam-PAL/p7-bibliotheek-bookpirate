@@ -30,29 +30,45 @@
           media="screen">
 </head>
 <body>
-<!-- header section start -->
+<div style="width: auto" id="error_header"></div>
 <div class="header_section">
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="logo" href="index.html"><img src="/static/images/bp.svg" width="50" height="50"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <!-- nav link aanpassen -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="books.html">Books</a>
+                    <a class="nav-link" href="static/books.html">Books</a>
                 </li>
             </ul>
-            <div class="searchbar"><input class="form-control custom-radius" type="text"
-                                          placeholder="Search for books.." aria-label="search input in navbar"></div>
-            <!--               <div class="search_icon"><a class="add_button" href="#"><img alt="Add button icon" src="/static/images/add.png"><span class="padding_left_15">Add book</span></a></div>-->
-            <div class="search_icon"><a href="#"><img alt="Profile button" src="/static/images/user-icon.png"><span
-                    class="padding_left_15">login</span></a></div>
+            <div class="form-inline w-auto">
+                <div class="dropdown">
+                    <input class="form-control custom-radius dropdown-toggle" data-toggle="dropdown" type="search"
+                           placeholder="Search for books.." aria-label="search for books" id="liveSearch"
+                           autocomplete="off" aria-expanded="false">
+                    <div class="dropdown-menu dropdown-menu-right" id="liveSearch-result">
+                        <div class="dropdown-item">No results found</div>
+                    </div>
+                </div>
+            </div>
+            <div class="search_icon">
+                <a class="add_button" href="#">
+                    <img alt="Add button icon" src="/static/images/plus-24px.svg">
+                    <span class="padding_left_15">Add Book</span>
+                </a>
+            </div>
+            <div class="search_icon">
+                <a href="#"><img alt="Profile button" src="/static/images/user-icon.png">
+                    <span class="padding_left_15">login</span>
+                </a>
+            </div>
         </div>
     </nav>
 </div>
