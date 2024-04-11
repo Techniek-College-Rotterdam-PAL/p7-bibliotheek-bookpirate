@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"log"
 	"net/http"
 	"server/internal/models"
 	"server/internal/util"
@@ -281,6 +282,21 @@ func RemoveBook(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, nil)
+}
+
+func HostBooks(router *gin.Engine) {
+	var books []models.Book
+	if err := db.Find(&books).Error; err != nil {
+		log.Printf("[WARNING] %v", err)
+	}
+	for _, book := range books {
+		if book.Isbn != "" {
+			router.GET("/book/"+book.Isbn, func(c *gin.Context) {
+				c.File("../../../static/book.html")
+				//c.HTML(http.StatusOK, book.Isbn, book)
+			})
+		}
+	}
 }
 
 func countBooks(isbn string) (int64, error) {

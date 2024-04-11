@@ -19,8 +19,7 @@ var (
 	mainDb = func() *gorm.DB { return &gorm.DB{} }
 )
 
-func Run() {
-	router := gin.New()
+func Run(router *gin.Engine) {
 	config := util.LoadConfigFile()
 
 	router.NoRoute(func(c *gin.Context) {
@@ -42,6 +41,9 @@ func Run() {
 	})
 	router.GET("/register", func(c *gin.Context) {
 		c.File("../../../static/register.html")
+	})
+	router.GET("/books", func(c *gin.Context) {
+		c.File("../../../static/books.html")
 	})
 	router.GET("/contact-owner", func(c *gin.Context) {
 		c.File("../../../static/contact-owner.html")
@@ -72,6 +74,7 @@ func Run() {
 	//if err = router.RunTLS(config.Server.IP+":"+cast.ToString(config.Server.Port), "../../../certificate.pem", "../../../key.pem"); err != nil {
 	//	log.Fatal(err)
 	//}
+	HostBooks(router)
 	if err = router.Run(config.Server.IP + ":" + cast.ToString(config.Server.Port)); err != nil {
 		log.Println(err)
 	}
