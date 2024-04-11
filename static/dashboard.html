@@ -9,9 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <!-- site metas -->
-    <title>Home | Book Pirate</title>
-    <meta name="keywords" content="Book Pirate, Book, Pirate, Rent, Rent books, School, TCR">
-    <meta name="description" content="Rent books for every student">
+    <title>Admin dashboard | Book Pirate</title>
+    <meta name="keywords" content="nah">
+    <meta name="description" content="Free books for every one">
     <meta name="author" content="Marison Sol & Tanay Simons">
     <!-- bootstrap css -->
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
@@ -30,7 +30,6 @@
           media="screen">
 </head>
 <body>
-<!-- header section start -->
 <div style="width: auto" id="error_header"></div>
 <div class="header_section">
 
@@ -59,53 +58,54 @@
                     </div>
                 </div>
             </div>
-            <ul class="navbar-nav">
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"
-                       aria-expanded="false">Profile</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-menu" href="/login">Login</a>
-                        <a class="dropdown-menu" href="/register">Register</a>
-                        <a class="dropdown-menu" href="/dashboard">Admin dashboard</a>
-                    </div>
-                </li>
-            </ul>
+            <div class="search_icon">
+                <a href="/login" class="nav-link">Login</a>
+            </div>
+            <div class="search_icon">
+                <a href="/register" class="nav-link">Register</a>
+            </div>
         </div>
     </nav>
 </div>
-<!-- header section end -->
-<!-- banner section end -->
-<div class="banner_section layout_padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="banner_taital">BookPirate <br>TCR Book DB</div>
-                <p class="banner_text">The TCR Book Lookup DataBase</p>
-                <div class="see_bt"><a href="#">See More</a></div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- banner section end -->
-<!-- arrival section start -->
-<main role="main">
-    <div class="books py-5 bg-light">
-        <div class="text-center">
-            <h1 class="h1">Recently added books</h1>
-            <a class=" text-warning" href="/books">See more</a>
-        </div>
 
-        <div class="container">
-            <div class="row pt-3" id="books_main">
-                <script>
-                    window.onload = function () {
-                        fetchBooks();
-                    };
-                </script>
+<div class="container">
+    <main role="main">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-3 border-bottom">
+            <h1 class="h2">Admin Dashboard</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <button type="button" class="btn btn-primary" style="background: #df9911">Add book</button>
             </div>
         </div>
-    </div>
-</main>
+        <h2>Outgoing books</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+                <thead>
+                <tr>
+                    <th>Date rented</th>
+                    <th>Student</th>
+                    <th>ISBN</th>
+                    <th>Book name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- <tr> element met database gegevens hierin -->
+                <tr>
+                    <td>10-01-2024</td>
+                    <td>John Doe</td>
+                    <td>123-456-789</td>
+                    <td>Tanay V.S. Monkeys</td>
+                </tr>
+                <tr>
+                    <td>10-01-2024</td>
+                    <td>Anna Doe</td>
+                    <td>321-435-667</td>
+                    <td>Tanay hates Monkeys</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>
 
 <footer class="footer_section layout_padding">
     <div class="container">
@@ -127,7 +127,6 @@
     <div class="copyright_text">© Copyright 2023 All Right Reserved By Marison & Tanay.</div>
 </footer>
 
-<!-- copyright section end -->
 <!-- Javascript files-->
 <script src="static/wrapper.js"></script>
 <script src="static/js/jquery.min.js"></script>
@@ -147,5 +146,4 @@
     });
 </script>
 </body>
-
 </html>

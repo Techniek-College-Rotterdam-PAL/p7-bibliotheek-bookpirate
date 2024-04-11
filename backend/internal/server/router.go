@@ -39,11 +39,14 @@ func Run(router *gin.Engine) {
 	router.GET("/", func(c *gin.Context) {
 		c.File("../../../static/index.html")
 	})
-	router.GET("/register", func(c *gin.Context) {
-		c.File("../../../static/register.html")
-	})
 	router.GET("/books", func(c *gin.Context) {
 		c.File("../../../static/books.html")
+	})
+	router.GET("/login", func(c *gin.Context) {
+		c.File("../../../static/login.html")
+	})
+	router.GET("/register", func(c *gin.Context) {
+		c.File("../../../static/register.html")
 	})
 	router.GET("/contact-owner", func(c *gin.Context) {
 		c.File("../../../static/contact-owner.html")

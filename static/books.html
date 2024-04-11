@@ -9,11 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <!-- site metas -->
-    <title>Home | Book Pirate</title>
+    <title>Books | Book Pirate</title>
     <meta name="keywords" content="nah">
     <meta name="description" content="Free books for every one">
     <meta name="author" content="Marison Sol & Tanay Simons">
-    <script src="static/wrapper.js"></script>
     <!-- bootstrap css -->
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
     <!-- style css -->
@@ -31,8 +30,9 @@
           media="screen">
 </head>
 <body>
-
+<div style="width: auto" id="error_header"></div>
 <div class="header_section">
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="logo" href="index.html"><img src="/static/images/bp.svg" width="50" height="50"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -47,9 +47,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/books">Books</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Authors</a>
-                </li>
             </ul>
             <div class="form-inline w-auto">
                 <div class="dropdown">
@@ -62,15 +59,10 @@
                 </div>
             </div>
             <div class="search_icon">
-                <a class="add_button" href="#">
-                    <img alt="Add button icon" src="/static/images/plus-24px.svg">
-                    <span class="padding_left_15">Add Book</span>
-                </a>
+                <a href="/login" class="nav-link">Login</a>
             </div>
             <div class="search_icon">
-                <a href="#"><img alt="Profile button" src="/static/images/user-icon.png">
-                    <span class="padding_left_15">login</span>
-                </a>
+                <a href="/register" class="nav-link">Register</a>
             </div>
         </div>
     </nav>
@@ -78,11 +70,15 @@
 
 <main role="main">
     <div class="books py-5 bg-light">
+        <div class="text-center">
+            <h1 class="h1">Books</h1>
+        </div>
+
         <div class="container">
             <div class="row pt-3" id="books_main">
                 <script>
                     window.onload = function () {
-                        fetchMovies();
+                        fetchBooks();
                     };
                 </script>
             </div>
@@ -94,9 +90,8 @@
     <div class="container">
         <div class="footer_menu">
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Books</a></li>
-                <li><a href="#">Authors</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/books">Books</a></li>
             </ul>
         </div>
         <div class="social_icon">
@@ -111,7 +106,8 @@
     <div class="copyright_text">© Copyright 2023 All Right Reserved By Marison & Tanay.</div>
 </footer>
 
-script src="static/wrapper.js"></script>
+<!-- Javascript files-->
+<script src="static/wrapper.js"></script>
 <script src="static/js/jquery.min.js"></script>
 <script src="static/js/popper.min.js"></script>
 

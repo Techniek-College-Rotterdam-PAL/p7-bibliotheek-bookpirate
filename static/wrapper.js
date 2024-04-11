@@ -58,7 +58,7 @@ function sendRequest(elementId, endPoint) {
 }
 
 
-function  fetchMovies() {
+function  fetchBooks() {
     fetch("http://127.0.0.1:8080/api/v1/fetch-books", {
         method: "POST",
         headers: {
