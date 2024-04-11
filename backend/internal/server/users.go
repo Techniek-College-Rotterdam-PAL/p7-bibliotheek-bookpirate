@@ -192,7 +192,7 @@ func Login(c *gin.Context) {
 		})
 		return
 	} else if c.GetHeader(authorizationHeader) != "" {
-		if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err == nil {
+		if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err != nil {
 			c.JSON(http.StatusUnauthorized, Message{
 				Code:    InvalidSession,
 				Message: messages[InvalidSession],
@@ -204,7 +204,6 @@ func Login(c *gin.Context) {
 			})
 		}
 		return
-
 	}
 
 	if !(user.Email == authRequest.Email && user.Username == authRequest.Username) {
@@ -237,4 +236,8 @@ func Login(c *gin.Context) {
 		Message: messages[SuccessfulAuthentication],
 		Data:    data,
 	})
+}
+
+func Logout() {
+
 }

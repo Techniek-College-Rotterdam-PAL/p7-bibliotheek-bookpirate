@@ -28,6 +28,7 @@ const (
 	InsufficientPermissions
 	UsernameAlreadyTaken
 	EmailAlreadyUsed
+	TooManyBooks
 	AlreadyLoggedIn
 	AlreadyLoggedInDifferentAccount
 	InvalidEmail
@@ -40,8 +41,10 @@ const (
 	SuccessfulDeAuthentication
 	SuccessfulRegistration
 	SuccessfulInsert
+	SuccessfulReservation
 	UnsuccessfulRegistration
 	InvalidSession
+	NoMoreStock
 )
 
 var messages = map[Code]string{
@@ -64,15 +67,18 @@ var messages = map[Code]string{
 	AdminNeeded:                     "Admin Needed",
 	InvalidPassword:                 "Invalid Password",
 	EmailAlreadyUsed:                "Email already used",
+	TooManyBooks:                    "Book already reserved",
 	AlreadyLoggedIn:                 "Already logged in",
 	AlreadyLoggedInDifferentAccount: "Already logged into different account, please logout to login.html into different account",
 	InvalidAuthentication:           "invalid email or password",
 	SuccessfulAuthentication:        "Successfully authenticated.",
-	SuccessfulDeAuthentication:      "Successfully deauthenticated.",
+	SuccessfulDeAuthentication:      "Successfully de-authenticated.",
 	SuccessfulRegistration:          "Successfully registered.",
 	SuccessfulInsert:                "Successfully added book.",
+	SuccessfulReservation:           "Successfully reserved book",
 	UnsuccessfulRegistration:        "Internal Server Error.",
 	InvalidSession:                  "Invalid session.",
+	NoMoreStock:                     "No stock left",
 }
 
 type Message struct {

@@ -6,6 +6,8 @@ import (
 	"github.com/go-playground/validator/v10"
 	"net/http"
 	"server/internal/models"
+	"server/internal/util"
+	"time"
 )
 
 // SearchBooks returns list of books of requested name from database
@@ -112,14 +114,31 @@ func ReserveBook(c *gin.Context) {
 		return
 	}
 	var user models.User
-	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err == nil {
+	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, Message{
 			Code:    InvalidSession,
 			Message: messages[InvalidSession],
 		})
 		return
 	}
+
+	var reserve models.Reservation
+	if err := db.Where("id = ? AND reserved_isbn = ?", user.ID, book.Isbn).First(&reserve).Error; err == nil {
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    TooManyBooks,
+			Message: messages[TooManyBooks],
+		})
+		return
+	}
+
 	if err := db.Where("isbn = ?", book.Isbn).First(&book).Error; err == nil {
+		if book.Stock <= 0 {
+			c.JSON(http.StatusInternalServerError, Message{
+				Code:    NoMoreStock,
+				Message: messages[NoMoreStock],
+			})
+			return
+		}
 		book.Stock--
 		if err = db.Where("isbn = ?", book.Isbn).Save(&book).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, Message{
@@ -129,15 +148,35 @@ func ReserveBook(c *gin.Context) {
 			return
 		}
 	} else {
-		if err = db.Create(&book).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, Message{
-				Code:    DatabaseQueryError,
-				Message: messages[DatabaseQueryError],
-			})
-			return
-		}
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    IsbnNotFound,
+			Message: messages[IsbnNotFound],
+		})
+		return
+		//if err = db.Create(&book).Error; err != nil {
+		//	c.JSON(http.StatusInternalServerError, Message{
+		//		Code:    DatabaseQueryError,
+		//		Message: messages[DatabaseQueryError],
+		//	})
+		//	return
+		//}
+	}
+	reserve.Id = user.ID //reserve.ReservedIsbn = append(reserve.ReservedIsbn, book.Isbn) // gorm + mysql with arrays weird!
+	reserve.ReservedIsbn = book.Isbn
+	reserve.TimeStamp = util.GenerateSnowflake(time.Now())
+
+	if err := db.Create(&reserve).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    DatabaseQueryError,
+			Message: messages[DatabaseQueryError],
+		})
+		return
 	}
 
+	c.JSON(http.StatusOK, Message{
+		Code:    SuccessfulReservation,
+		Message: messages[SuccessfulReservation],
+	})
 }
 
 // AddBook adds book to database

@@ -25,4 +25,5 @@ var middleWares = map[string]func(*gin.Context){
 	PathAPI + "add-book:POST":     AddBook,
 	PathAPI + "search-books:POST": SearchBooks,
 	PathAPI + "remove:DELETE":     RemoveBook,
+	PathAPI + "reserve-book:POST": ReserveBook,
 }
