@@ -9,3 +9,4 @@
 - ISBN api call
 - Live search functie
 - boek layout mooier maken (een grote afbeelding etc.)
+- Dropdown navbar
