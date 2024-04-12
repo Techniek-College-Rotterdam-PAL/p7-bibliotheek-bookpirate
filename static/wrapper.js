@@ -33,17 +33,21 @@ function sendRequest(elementId, endPoint) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": getAuthToken()
         },
         body: JSON.stringify(jsonData),
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             errorMessage(data)
+            resp = data
             // if (!data === null) {
             //     console.log("fihrbefjuon")
             //     errorMessage(data)
             // }
+            if (!data.data.token === null) {
+                setAuthToken(data.data.token)
+            }
             if (data.message === "Admin Needed") {
                 window.location.replace("http://127.0.0.1:8080/contact-owner")
             }
@@ -58,7 +62,7 @@ function sendRequest(elementId, endPoint) {
 }
 
 
-function  fetchBooks() {
+function fetchBooks() {
     fetch("http://127.0.0.1:8080/api/v1/fetch-books", {
         method: "POST",
         headers: {
@@ -68,7 +72,25 @@ function  fetchBooks() {
     })
         .then(response => response.json())
         .then(data => {
-            renderMovies(data);
+            renderBooks(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function fetchReservations() {
+    fetch("http://127.0.0.1:8080/api/v1/fetch-reservations", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": getAuthToken()
+        },
+        body: JSON.stringify({list: 30})
+    })
+        .then(response => response.json())
+        .then(data => {
+            generateTable(data);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -76,8 +98,25 @@ function  fetchBooks() {
 }
 
 
+function generateTable(data) {
+    var tableHTML = "<table><thead><tr><th>Date rented</th><th>Student</th><th>ISBN</th><th>Book name</th></tr></thead><tbody>";
 
-function renderMovies(response) {
+    data.forEach(function(data) {
+        tableHTML += "<tr>";
+        tableHTML += "<td>" + data.date + "</td>";
+        tableHTML += "<td>" + data.student + "</td>";
+        tableHTML += "<td>" + data.isbn + "</td>";
+        tableHTML += "<td>" + data.bookName + "</td>";
+        tableHTML += "</tr>";
+    });
+
+    tableHTML += "</tbody></table>";
+    return tableHTML;
+}
+
+
+
+function renderBooks(response) {
     const booksMain = document.getElementById('books_main');
     booksMain.innerHTML = '';
     const data = response.data;
