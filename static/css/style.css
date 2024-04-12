@@ -20,7 +20,6 @@
 /*--------------------------------------------------------------------- import Files ---------------------------------------------------------------------*/
 
 @import url(animate.min.css);
-@import url(bootstrap.css);
 @import url(normalize.css);
 @import url(icomoon.css);
 @import url(css/font-awesome.min.css);
@@ -795,11 +794,9 @@ input.email_text::placeholder {
 .footer_section {
     width: 100%;
     float: left;
-    min-height: 10vh;
     background-color: #3c0e0e;
     height: auto;
     padding: 90px 0px;
-    position: relative;
 }
 
 .footer_menu {

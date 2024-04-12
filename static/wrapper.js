@@ -47,7 +47,6 @@ function sendRequest(elementId, endPoint) {
             if (data.message === "Admin Needed") {
                 window.location.replace("http://127.0.0.1:8080/contact-owner")
             }
-            resp = response.json();
         })
         .then(data => {
             console.log("Request successful:", data);
@@ -59,7 +58,7 @@ function sendRequest(elementId, endPoint) {
 }
 
 
-function fetchMovies() {
+function  fetchBooks() {
     fetch("http://127.0.0.1:8080/api/v1/fetch-books", {
         method: "POST",
         headers: {
@@ -76,6 +75,8 @@ function fetchMovies() {
         });
 }
 
+
+
 function renderMovies(response) {
     const booksMain = document.getElementById('books_main');
     booksMain.innerHTML = '';
@@ -85,13 +86,14 @@ function renderMovies(response) {
         data.forEach(book => {
             const bookDiv = document.createElement('div');
             bookDiv.className = 'col-md-4';
-
-            // language=HTML
             bookDiv.innerHTML = `
                 <div class="card mb-4 shadow-sm" style="background: #3c0e0e; border-radius: 20px">
-                    <a class="#" href="#">
-                    <img class="card-img-top" src="static/images/no-image.svg" alt-label="Thumbnail"
-                         style="height: 220px; width: 100%; display: block; border-radius: 20px">
+                    <a class="#" href="/book/${book.isbn}" id="bookLink"></a>
+                    <a href="/book/${book.isbn}">
+                        <img class="card-img-top" src="static/images/no-image.svg" alt="Thumbnail"
+                             style="height: 220px; width: 100%; display: block; border-radius: 20px">
+                    </a>
+
                     <!-- text -->
                     <div class="card-body">
                         <h5 class="text-center pb-0" style="color: white">${book.title}</h5>

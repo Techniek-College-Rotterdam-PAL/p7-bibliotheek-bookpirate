@@ -2,26 +2,9 @@ html, body {
     height: 100%;
 }
 
-#error_header {
-    width: 1000px;
-    margin: 0 auto;
-}
-
 .form-register {
     max-width: 330px;
     padding: 1rem;
-}
-
-.form-register input, .form-register button,
-.form-register label {
-    max-width: 280px;
-    margin-left: 3%;
-}
-
-main {
-    background: #3c0e0e;
-    border-radius: 20px;
-    width: 70vh
 }
 
 .form-register .form-floating:focus-within {
@@ -34,18 +17,8 @@ main {
     border-bottom-right-radius: 0;
 }
 
-.form-register input[type="text"] {
-    margin: -1px;
-    border-radius: 0;
-    margin-left: 3%;
-}
-
 .form-register input[type="password"] {
-    margin-bottom: -1px;
-    border-radius: 0;
-}
-
-.form-register button {
+    margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
