@@ -24,6 +24,7 @@ const (
 
 	UserNotFound
 	InvalidAuthenticationRequest
+	RequestTooBig
 	DatabaseQueryError
 	InsufficientPermissions
 	UsernameAlreadyTaken
@@ -58,6 +59,7 @@ var messages = map[Code]string{
 
 	UserNotFound:                    "User not found.",
 	InvalidAuthenticationRequest:    "Malformed body or invalid content.",
+	RequestTooBig:                   "Request to big, server denied",
 	DatabaseQueryError:              "Internal server error.",
 	InsufficientPermissions:         "User does not have permission",
 	UsernameAlreadyTaken:            "Username already in use",

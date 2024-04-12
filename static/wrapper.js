@@ -19,6 +19,8 @@
 //     xhr.send(formData);
 // }
 
+
+
 function sendRequest(elementId, endPoint) {
     const form = document.getElementById(elementId);
     const formData = new FormData(form);
@@ -40,17 +42,13 @@ function sendRequest(elementId, endPoint) {
         .then(response => response.json())
         .then(data => {
             errorMessage(data)
-            resp = data
-            // if (!data === null) {
-            //     console.log("fihrbefjuon")
-            //     errorMessage(data)
-            // }
-            if (!data.data.token === null) {
-                setAuthToken(data.data.token)
-            }
             if (data.message === "Admin Needed") {
                 window.location.replace("http://127.0.0.1:8080/contact-owner")
             }
+            if (!data.data.token === null) {
+                setAuthToken(data.data.token)
+            }
+            resp = data
         })
         .then(data => {
             console.log("Request successful:", data);
@@ -79,8 +77,8 @@ function fetchBooks() {
         });
 }
 
-function fetchReservations() {
-    fetch("http://127.0.0.1:8080/api/v1/fetch-reservations", {
+function fetchAdminBooks() {
+    fetch("http://127.0.0.1:8080/api/v1/fetch-all-books", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -98,22 +96,39 @@ function fetchReservations() {
 }
 
 
-function generateTable(data) {
-    var tableHTML = "<table><thead><tr><th>Date rented</th><th>Student</th><th>ISBN</th><th>Book name</th></tr></thead><tbody>";
+function generateTable(response) {
+    const Main = document.getElementById('adminbooklist');
+    Main.innerHTML = '';
+    const data = response.data;
 
-    data.forEach(function(data) {
-        tableHTML += "<tr>";
-        tableHTML += "<td>" + data.date + "</td>";
-        tableHTML += "<td>" + data.student + "</td>";
-        tableHTML += "<td>" + data.isbn + "</td>";
-        tableHTML += "<td>" + data.bookName + "</td>";
-        tableHTML += "</tr>";
-    });
 
-    tableHTML += "</tbody></table>";
-    return tableHTML;
+    if (Array.isArray(data)) {
+        const tbody = document.getElementById('adminbooklist'); // select the tbody element
+        data.forEach(book => {
+            if (book.stock === undefined) {
+                book.stock = 1
+            }
+            const row = document.createElement('tr'); // create a table row
+            row.innerHTML = `
+            <td>${book.isbn}</td>
+            <td>${book.title}</td>
+            <td>${book.author}</td>
+            <td>${book.language}</td>
+            <td>${book.stock}</td>
+            <td>
+                <div class="btn-group" role="group" aria-label="Button for availability">
+                    <button type="button" class="btn btn-success">✔</button>
+                    <button type="button" class="btn btn-danger">✘</button>
+                </div>
+            </td>
+        `;
+            tbody.appendChild(row); // append the row to the tbody
+        });
+    } else {
+        console.error('Data is not an array:', data);
+    }
+
 }
-
 
 
 function renderBooks(response) {

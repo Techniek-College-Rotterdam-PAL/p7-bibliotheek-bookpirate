@@ -19,11 +19,12 @@ const (
 )
 
 var middleWares = map[string]func(*gin.Context){
-	PathAPI + "register:POST":     Register,
-	PathAPI + "login:POST":        Login,
-	PathAPI + "fetch-books:POST":  FeedBooks,
-	PathAPI + "add-book:POST":     AddBook,
-	PathAPI + "search-books:POST": SearchBooks,
-	PathAPI + "remove:DELETE":     RemoveBook,
-	PathAPI + "reserve-book:POST": ReserveBook,
+	PathAPI + "register:POST":        Register,
+	PathAPI + "login:POST":           Login,
+	PathAPI + "fetch-books:POST":     FeedBooks,
+	PathAPI + "add-book:POST":        AddBook,
+	PathAPI + "search-books:POST":    SearchBooks,
+	PathAPI + "remove:DELETE":        RemoveBook,
+	PathAPI + "reserve-book:POST":    ReserveBook,
+	PathAPI + "fetch-all-books:POST": FetchBooks,
 }

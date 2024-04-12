@@ -215,7 +215,7 @@ func Login(c *gin.Context) {
 	}
 	if err := bcrypt.CompareHashAndPassword([]byte(user.HashedPassword), []byte(authRequest.Password)); err != nil {
 		c.JSON(http.StatusForbidden, Message{
-			Code:    IncorrectPassword,
+			Code:    RequestTooBig,
 			Message: messages[IncorrectPassword],
 		})
 		return

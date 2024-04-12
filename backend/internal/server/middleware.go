@@ -75,6 +75,13 @@ func FeedBooks(c *gin.Context) {
 		})
 		return
 	}
+	if feedRequest.Limit > 100 {
+		c.JSON(http.StatusUnprocessableEntity, Message{
+			Code:    InvalidAuthenticationRequest,
+			Message: messages[InvalidAuthenticationRequest],
+		})
+		return
+	}
 
 	var results []models.Book
 	if err := db.Order("RAND()").Limit(feedRequest.Limit).Find(&results).Error; err != nil {
@@ -85,6 +92,36 @@ func FeedBooks(c *gin.Context) {
 		return
 	}
 	data, err := json.Marshal(results)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    InternalServerError,
+			Message: messages[InternalServerError],
+		})
+		return
+	}
+	c.JSON(http.StatusOK, Message{
+		Data: data,
+	})
+}
+
+func FetchBooks(c *gin.Context) {
+	if c.Request.Method != http.MethodPost {
+		c.JSON(http.StatusMethodNotAllowed, Message{
+			Code:    MethodNotAllowed,
+			Message: messages[MethodNotAllowed],
+		})
+		return
+	}
+
+	var book []models.Book
+	if err := db.Find(&book).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    DatabaseQueryError,
+			Message: messages[DatabaseQueryError],
+		})
+		return
+	}
+	data, err := json.Marshal(book)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, Message{
 			Code:    InternalServerError,
