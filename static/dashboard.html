@@ -90,17 +90,17 @@
 
         <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" style="background: #3c0e0e">
                     <div class="modal-header">
-                        <h5 class="modal-title">New book</h5>
+                        <h5 class="modal-title text-light">New book</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="close">
-                            <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true" class="text-light">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body" style="height: 60vh;">
-                        <form class="form-control " method="post" action="">
+                    <div class="modal-body" style="height: 51vh;">
+                        <form class="form-control" method="post" action="" style="height: 100%">
                             <div class="mb-3">
-                                <label for="name" style="border: 0;">Name:</label>
+                                <label for="name">Name:</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="name" placeholder="Name" required>
                                 </div>
@@ -129,20 +129,11 @@
                                     <input type="number" class="form-control" id="stock" placeholder="0" required>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="available">Available:</label>
-                                <div class="input-group">
-                                    <select id="available">
-                                        <option value="0">No</option>
-                                        <option value="1">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="">Save</button>
+                        <button type="button" class="btn btn-primary" onclick="" style="background: #df9911">Save</button>
                     </div>
                 </div>
             </div>
