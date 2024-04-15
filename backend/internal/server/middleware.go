@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"gorm.io/gorm"
 	"log"
 	"net/http"
 	"server/internal/models"
@@ -384,14 +385,16 @@ func AddBook(c *gin.Context) {
 		})
 		return
 	}
-	var book models.Book
-	if err := c.ShouldBindJSON(&book); err != nil {
+
+	var addRequest models.Book
+	if err := c.ShouldBindJSON(&addRequest); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, Message{
 			Code:    MalformedContent,
 			Message: messages[MalformedContent],
 		})
 		return
 	}
+
 	var user models.User
 	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, Message{
@@ -400,6 +403,7 @@ func AddBook(c *gin.Context) {
 		})
 		return
 	}
+
 	var admin models.Admin
 	if err := db.Where("ID = ?", user.ID).First(&admin).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, Message{
@@ -408,9 +412,23 @@ func AddBook(c *gin.Context) {
 		})
 		return
 	}
-	if err := db.Where("isbn = ?", book.Isbn).First(&book).Error; err == nil {
-		book.Stock++
-		if err = db.Where("isbn = ?", book.Isbn).Save(&book).Error; err != nil {
+	var book models.Book
+	if err := db.Where("isbn = ?", addRequest.Isbn).First(&book).Error; err == nil {
+		if addRequest.Stock <= 0 {
+			book.Stock++
+		} else {
+			book.Stock += addRequest.Stock
+		}
+		if err = db.Model(&book).Where("isbn = ?", addRequest.Isbn).Update("stock", book.Stock).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, Message{
+				Code:    DatabaseQueryError,
+				Message: messages[DatabaseQueryError],
+			})
+			return
+		}
+	} else if err == gorm.ErrRecordNotFound {
+		addRequest.Available = false
+		if err = db.Create(&addRequest).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, Message{
 				Code:    DatabaseQueryError,
 				Message: messages[DatabaseQueryError],
@@ -418,19 +436,18 @@ func AddBook(c *gin.Context) {
 			return
 		}
 	} else {
-		if err = db.Create(&book).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, Message{
-				Code:    DatabaseQueryError,
-				Message: messages[DatabaseQueryError],
-			})
-			return
-		}
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    DatabaseQueryError,
+			Message: messages[DatabaseQueryError],
+		})
+		return
 	}
 
 	c.JSON(http.StatusOK, Message{
 		Code:    SuccessfulInsert,
 		Message: messages[SuccessfulInsert],
 	})
+
 }
 
 func ChangeBookStatus(c *gin.Context) {
