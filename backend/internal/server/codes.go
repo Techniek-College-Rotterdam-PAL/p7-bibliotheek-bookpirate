@@ -24,6 +24,7 @@ const (
 
 	UserNotFound
 	InvalidAuthenticationRequest
+	RequestTooBig
 	DatabaseQueryError
 	InsufficientPermissions
 	UsernameAlreadyTaken
@@ -45,19 +46,22 @@ const (
 	UnsuccessfulRegistration
 	InvalidSession
 	NoMoreStock
+	BookStatusAvailable
+	BookStatusUnavailable
 )
 
 var messages = map[Code]string{
-	MethodNotAllowed:    "Method is not allowed that this endpoint.",
-	MalformedContent:    "Malformed body or invalid content.",
-	IncorrectPassword:   "Incorrect password.",
-	InternalServerError: "Internal server error.",
+	MethodNotAllowed:    "Method is not allowed that this endpoint",
+	MalformedContent:    "Malformed body or invalid content",
+	IncorrectPassword:   "Incorrect password",
+	InternalServerError: "Internal server error",
 	ClientRateLimit:     "Temporarily blocked",
-	Forbidden:           "Forbidden.",
+	Forbidden:           "Forbidden",
 	NotFound:            "Not Found",
 
 	UserNotFound:                    "User not found.",
-	InvalidAuthenticationRequest:    "Malformed body or invalid content.",
+	InvalidAuthenticationRequest:    "Malformed body or invalid content",
+	RequestTooBig:                   "Request to big, server denied",
 	DatabaseQueryError:              "Internal server error.",
 	InsufficientPermissions:         "User does not have permission",
 	UsernameAlreadyTaken:            "Username already in use",
@@ -71,14 +75,16 @@ var messages = map[Code]string{
 	AlreadyLoggedIn:                 "Already logged in",
 	AlreadyLoggedInDifferentAccount: "Already logged into different account, please logout to login into different account",
 	InvalidAuthentication:           "invalid email or password",
-	SuccessfulAuthentication:        "Successfully authenticated.",
-	SuccessfulDeAuthentication:      "Successfully de-authenticated.",
-	SuccessfulRegistration:          "Successfully registered.",
-	SuccessfulInsert:                "Successfully added book.",
+	SuccessfulAuthentication:        "Successfully authenticated",
+	SuccessfulDeAuthentication:      "Successfully de-authenticated",
+	SuccessfulRegistration:          "Successfully registered",
+	SuccessfulInsert:                "Successfully added book",
 	SuccessfulReservation:           "Successfully reserved book",
-	UnsuccessfulRegistration:        "Internal Server Error.",
-	InvalidSession:                  "Invalid session.",
+	UnsuccessfulRegistration:        "Internal Server Error",
+	InvalidSession:                  "Invalid session",
 	NoMoreStock:                     "No stock left",
+	BookStatusAvailable:             "Successfully changed book status to: Available",
+	BookStatusUnavailable:           "Successfully changed book status to: Unavailable",
 }
 
 type Message struct {

@@ -9,9 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <!-- site metas -->
-    <title>Books | Book Pirate</title>
-    <meta name="keywords" content="nah">
-    <meta name="description" content="Free books for every one">
+    <title>Home | Book Pirate</title>
+    <meta name="keywords" content="Book Pirate, Book, Pirate, Rent, Rent books, School, TCR">
+    <meta name="description" content="Rent books for every student">
     <meta name="author" content="Marison Sol & Tanay Simons">
     <!-- bootstrap css -->
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
@@ -30,11 +30,12 @@
           media="screen">
 </head>
 <body>
+<!-- header section start -->
 <div style="width: auto" id="error_header"></div>
 <div class="header_section">
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="logo" href="index.html"><img src="/static/images/bp.svg" width="50" height="50"></a>
+        <a class="logo" href="/"><img src="/static/images/bp.svg" width="50" height="50"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -55,8 +56,10 @@
                     <div class="dropdown-menu" role="menu">
                         <a class="dropdown-item" href="/login">Login</a>
                         <a class="dropdown-item" href="/register">Register</a>
+                        <a class="dropdown-item" onclick="removeAuthToken()" href="/">Logout</a>
+                        <a class="dropdown-item" href="/reserved">Reserved</a>
                         <p class="dropdown-divider"></p>
-                        <a class="dropdown-item" href="/dashboard">Admin dashboard</a>
+                        <a class="dropdown-item" href="/dashboard">Dashboard</a>
                     </div>
                 </li>
             </ul>
@@ -70,6 +73,59 @@
                     </div>
                 </div>
             </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                var typingTimer;
+                var doneTypingInterval = 200;
+
+                $(document).ready(function () {
+                    $('#liveSearch').on('input', function () {
+                        clearTimeout(typingTimer);
+                        if ($('#liveSearch').val()) {
+                            typingTimer = setTimeout(performSearch, doneTypingInterval);
+                        }
+                    });
+
+                    function performSearch() {
+                        var query = $('#liveSearch').val();
+                        $.ajax({
+                            url: 'http://127.0.0.1:8080/api/v1/search-books',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({title: query}),
+                            success: function (response) {
+                                var html = '';
+                                response.data.forEach(function (book) {
+                                    html += '<a class="dropdown-item" href="#" data-title="' + book.title + '" data-isbn="' + book.isbn + '">' + book.title + ' - ' + book.isbn + '</a>';
+                                });
+                                $('#liveSearch-result').html(html);
+                            },
+                            error: function () {
+                                $('#liveSearch-result').html('<div class="dropdown-item">Error fetching results</div>');
+                            }
+                        });
+                    }
+
+                    $(document).on('click', '#liveSearch-result .dropdown-item', function () {
+                        var selectedTitle = $(this).data('title');
+                        var selectedIsbn = $(this).data('isbn');
+                        navigateToSearch(selectedTitle, selectedIsbn);
+                    });
+
+                    $('#liveSearch').keypress(function(event) {
+                        if (event.keyCode === 13) {
+                            var query = $('#liveSearch').val();
+                            navigateToSearch(query);
+                        }
+                    });
+
+                    function navigateToSearch(title, isbn) {
+                        var searchQuery = title ? title : $('#liveSearch').val();
+                        window.location.href = '/search?title=' + encodeURIComponent(searchQuery);
+                    }
+                });
+            </script>
         </div>
     </nav>
 </div>
@@ -123,7 +179,7 @@
 <script src="static/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="static/js/custom.js"></script>
 <!-- javascript -->
-<script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
 
 <script>
     $('#datepicker').datepicker({
