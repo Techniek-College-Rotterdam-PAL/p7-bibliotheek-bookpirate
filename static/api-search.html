@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <!-- site metas -->
-    <title>Home | Book Pirate</title>
+    <title>API Search | Book Pirate</title>
     <meta name="keywords" content="Book Pirate, Book, Pirate, Rent, Rent books, School, TCR">
     <meta name="description" content="Rent books for every student">
     <meta name="author" content="Marison Sol & Tanay Simons">
@@ -79,105 +79,89 @@
                     </div>
                 </div>
             </div>
-
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script>
-                var typingTimer;
-                var doneTypingInterval = 200;
-
-                $(document).ready(function () {
-                    $('#liveSearch').on('input', function () {
-                        clearTimeout(typingTimer);
-                        if ($('#liveSearch').val()) {
-                            typingTimer = setTimeout(performSearch, doneTypingInterval);
-                        }
-                    });
-
-                    function performSearch() {
-                        var query = $('#liveSearch').val();
-                        $.ajax({
-                            url: 'http://127.0.0.1:8080/api/v1/search-books',
-                            method: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify({title: query}),
-                            success: function (response) {
-                                var html = '';
-                                response.data.forEach(function (book) {
-                                    html += '<a class="dropdown-item" href="#" data-title="' + book.title + '" data-isbn="' + book.isbn + '">' + book.title + ' - ' + book.isbn + '</a>';
-                                });
-                                $('#liveSearch-result').html(html);
-                            },
-                            error: function () {
-                                $('#liveSearch-result').html('<div class="dropdown-item">Error fetching results</div>');
-                            }
-                        });
-                    }
-
-                    $(document).on('click', '#liveSearch-result .dropdown-item', function () {
-                        var selectedTitle = $(this).data('title');
-                        var selectedIsbn = $(this).data('isbn');
-                        navigateToSearch(selectedTitle, selectedIsbn);
-                    });
-
-                    $('#liveSearch').keypress(function(event) {
-                        if (event.keyCode === 13) {
-                            var query = $('#liveSearch').val();
-                            navigateToSearch(query);
-                        }
-                    });
-
-                    function navigateToSearch(title, isbn) {
-                        var searchQuery = title ? title : $('#liveSearch').val();
-                        window.location.href = '/search?title=' + encodeURIComponent(searchQuery);
-                    }
-                });
-            </script>
         </div>
     </nav>
 </div>
-<div class="container">
-    <main role="main">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-3 border-bottom">
-            <h1 class="h2">Reserved Books</h1>
+
+<main role="main">
+    <div class="books py-5 bg-light">
+        <div class="text-center">
+            <h1 class="h1">Books</h1>
         </div>
 
+            <div class="container">
+                <div class="row justify-content-center"> <!-- Added justify-content-center class -->
+                    <div class="col-md-8"> <!-- Adjusted column size -->
+                        <div class="form-group">
+                            <div class="form-control custom-radius">
+                                <input type="text" id="searchInput" class="form-control" placeholder="Enter book title">
+                            </div>
+                            <div class="text-center"> <!-- Added text-center class -->
+                                <button id="searchButton" onclick="searchAPI()" class="btn btn-primary" style="background: #df9911">Search</button> <!-- Wrapped the button in a div with text-center class -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="row pt-3" id="books_main">
+                <script>
+                    function searchAPI() {
+                        const searchInput = document.getElementById('searchInput').value;
+                        const formattedQuery = encodeURIComponent(searchInput.toLowerCase().replace(/\s+/g, '+'));
+                        const url = 'https://openlibrary.org/search.json?q='+formattedQuery;
+                        fetch(url)
+                            .then(response => response.json())
+                            .then(data => {
+                                // Call renderBooks function with the response data
+                                enderBooks(data);
+                            })
+                            .catch(error => {
+                                console.error('Error fetching data:', error);
+                            });
+                    };
 
-        <h2>Outgoing books</h2>
-        <div class="table-responsive">
-            <table class="table table-striped table-sm" id="reservations">
-                <thead>
-                <tr>
-                    <th>Date rented</th>
-                    <th>ISBN</th>
-                    <th>Remove</th>
-                </tr>
-                </thead>
-                <tbody id="rentedlist">
+                    function enderBooks(response) {
+                        const booksMain = document.getElementById('books_main');
+                        booksMain.innerHTML = '';
+                        const docs = response.docs;
 
-                </tbody>
-            </table>
+                        if (docs && Array.isArray(docs) && docs.length > 0) {
+                            docs.forEach(book => {
+                                const bookDiv = document.createElement('div');
+                                bookDiv.className = 'col-md-4';
+                                bookDiv.innerHTML = `
+                <div class="card mb-4 shadow-sm" style="background: #3c0e0e; border-radius: 20px">
+                    <a href="/book/${book.key}">
+                        <img class="card-img-top" src="static/images/no-image.svg" alt="Thumbnail"
+                            style="height: 220px; width: 100%; display: block; border-radius: 20px">
+                    </a>
+
+                    <!-- text -->
+                    <div class="card-body">
+                        <h5 class="text-center pb-0" style="color: white">${book.title}</h5>
+                        <p class="card-text" style="color: white">Edition Count: ${book.edition_count || 0}</p>
+                        <p class="card-text" style="color: white">First Publish Year: ${book.first_publish_year}</p>
+                        <p class="card-text" style="color: white">Author: ${book.author_name.join(', ')}</p>
+                    </div>
+                </div>
+            `;
+                                booksMain.appendChild(bookDiv);
+                            });
+                        } else {
+                            console.error('No book data found or invalid format:', docs);
+                        }
+                    }
+                </script>
+            </div>
         </div>
-
-        <script>
-            window.onload = function () {
-                var userLink = document.getElementById("userLink");
-                var data = newRequestBook(null, "api/v1/user-info")
-                    .then(data => {
-                        userLink.textContent = data.data.Username + " | " + data.data.Email;
-                    })
-                fetchStudentRentedBooks();
-            };
-        </script>
-
-    </main>
-</div>
+    </div>
+</main>
 
 <footer class="footer_section layout_padding">
     <div class="container">
         <div class="footer_menu">
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="static/books">Books</a></li>
+                <li><a href="/books">Books</a></li>
                 <li><a href="/api-search">API Search</a></li>
             </ul>
         </div>
@@ -190,9 +174,18 @@
             </ul>
         </div>
     </div>
-    <div class="copyright_text">© Copyright 2023 All Right Reserved By Marison & Tanay.</div>
+    <div class="copyright_text">© Copyright 2024 All Right Reserved By Marison & Tanay.</div>
 </footer>
 
+<script>
+    window.onload = function () {
+        var userLink = document.getElementById("userLink");
+        var data = newRequestBook(null, "api/v1/user-info")
+            .then(data => {
+                userLink.textContent = data.data.Username + " | " + data.data.Email;
+            })
+    };
+</script>
 
 <!-- Javascript files-->
 <script src="static/wrapper.js"></script>

@@ -36,30 +36,7 @@ func Run(router *gin.Engine) {
 		})
 	})
 	router.Static("../../../static", "../../.././static")
-	router.GET("/", func(c *gin.Context) {
-		c.File("../../../static/index.html")
-	})
-	router.GET("/books", func(c *gin.Context) {
-		c.File("../../../static/books.html")
-	})
-	router.GET("/login", func(c *gin.Context) {
-		c.File("../../../static/login.html")
-	})
-	router.GET("/register", func(c *gin.Context) {
-		c.File("../../../static/register.html")
-	})
-	router.GET("/contact-owner", func(c *gin.Context) {
-		c.File("../../../static/contact-owner.html")
-	})
-	router.GET("/dashboard", func(c *gin.Context) {
-		c.File("../../../static/dashboard.html")
-	})
-	router.GET("/search", func(c *gin.Context) {
-		c.File("../../../static/search.html")
-	})
-	router.GET("/reserved", func(c *gin.Context) {
-		c.File("../../../static/reserved.html")
-	})
+	StaticRoutes(router)
 
 	for s, middleware := range middleWares {
 		info := strings.Split(s, ":")
@@ -90,4 +67,34 @@ func Run(router *gin.Engine) {
 	if err = router.Run(config.Server.IP + ":" + cast.ToString(config.Server.Port)); err != nil {
 		log.Println(err)
 	}
+}
+
+func StaticRoutes(router *gin.Engine) {
+	router.GET("/", func(c *gin.Context) {
+		c.File("../../../static/index.html")
+	})
+	router.GET("/books", func(c *gin.Context) {
+		c.File("../../../static/books.html")
+	})
+	router.GET("/login", func(c *gin.Context) {
+		c.File("../../../static/login.html")
+	})
+	router.GET("/register", func(c *gin.Context) {
+		c.File("../../../static/register.html")
+	})
+	router.GET("/contact-owner", func(c *gin.Context) {
+		c.File("../../../static/contact-owner.html")
+	})
+	router.GET("/dashboard", func(c *gin.Context) {
+		c.File("../../../static/dashboard.html")
+	})
+	router.GET("/search", func(c *gin.Context) {
+		c.File("../../../static/search.html")
+	})
+	router.GET("/reserved", func(c *gin.Context) {
+		c.File("../../../static/reserved.html")
+	})
+	router.GET("/api-search", func(c *gin.Context) {
+		c.File("../../../static/api-search.html")
+	})
 }

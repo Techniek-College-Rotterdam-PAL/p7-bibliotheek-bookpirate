@@ -241,5 +241,34 @@ func Login(c *gin.Context) {
 }
 
 func UserInfo(c *gin.Context) {
-
+	if c.Request.Method != http.MethodPost {
+		c.JSON(http.StatusMethodNotAllowed, Message{
+			Code:    MethodNotAllowed,
+			Message: messages[MethodNotAllowed],
+		})
+		return
+	}
+	var user models.User
+	if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err != nil {
+		c.JSON(http.StatusUnauthorized, Message{
+			Code:    InvalidSession,
+			Message: messages[InvalidSession],
+		})
+		return
+	}
+	data, err := json.Marshal(models.User{
+		ID:       user.ID,
+		Email:    user.Email,
+		Username: user.Username,
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, Message{
+			Code:    InternalServerError,
+			Message: messages[InternalServerError],
+		})
+		return
+	}
+	c.JSON(http.StatusOK, Message{
+		Data: data,
+	})
 }

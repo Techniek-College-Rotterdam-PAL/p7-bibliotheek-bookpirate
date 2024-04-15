@@ -28,6 +28,7 @@ var middleWares = map[string]func(*gin.Context){
 	PathAPI + "remove:DELETE":           RemoveBook,
 	PathAPI + "reserve-book:POST":       ReserveBook,
 	PathAPI + "book-info:POST":          BookInfo,
+	PathAPI + "user-info:POST":          UserInfo,
 	PathAPI + "book-status:POST":        ChangeBookStatus,
 	PathAPI + "fetch-rented:POST":       FetchRentedBooks,
 	PathAPI + "fetch-all-books:POST":    FetchBooks,
