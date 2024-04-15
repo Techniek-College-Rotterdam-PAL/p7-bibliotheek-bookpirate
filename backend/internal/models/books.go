@@ -8,7 +8,7 @@ type Book struct {
 	Isbn      string `json:"isbn,omitempty" validate:"required" binding:"required"`
 	Author    string `json:"author,omitempty" validate:"required" binding:"required"`
 	Language  string `json:"language,omitempty"`
-	Available bool   `json:"type"`
+	Available bool   `json:"type,omitempty"`
 }
 
 type SearchRequest struct {
