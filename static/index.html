@@ -35,7 +35,7 @@
 <div class="header_section">
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="logo" href="index.html"><img src="/static/images/bp.svg" width="50" height="50"></a>
+        <a class="logo" href="/"><img src="/static/images/bp.svg" width="50" height="50"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -56,8 +56,10 @@
                     <div class="dropdown-menu" role="menu">
                         <a class="dropdown-item" href="/login">Login</a>
                         <a class="dropdown-item" href="/register">Register</a>
+                        <a class="dropdown-item" onclick="removeAuthToken()" href="/">Logout</a>
+                        <a class="dropdown-item" href="/reserved">Reserved</a>
                         <p class="dropdown-divider"></p>
-                        <a class="dropdown-item" href="/dashboard">Admin dashboard</a>
+                        <a class="dropdown-item" href="/dashboard">Dashboard</a>
                     </div>
                 </li>
             </ul>
@@ -71,6 +73,59 @@
                     </div>
                 </div>
             </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                var typingTimer;
+                var doneTypingInterval = 200;
+
+                $(document).ready(function () {
+                    $('#liveSearch').on('input', function () {
+                        clearTimeout(typingTimer);
+                        if ($('#liveSearch').val()) {
+                            typingTimer = setTimeout(performSearch, doneTypingInterval);
+                        }
+                    });
+
+                    function performSearch() {
+                        var query = $('#liveSearch').val();
+                        $.ajax({
+                            url: 'http://127.0.0.1:8080/api/v1/search-books',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({title: query}),
+                            success: function (response) {
+                                var html = '';
+                                response.data.forEach(function (book) {
+                                    html += '<a class="dropdown-item" href="#" data-title="' + book.title + '" data-isbn="' + book.isbn + '">' + book.title + ' - ' + book.isbn + '</a>';
+                                });
+                                $('#liveSearch-result').html(html);
+                            },
+                            error: function () {
+                                $('#liveSearch-result').html('<div class="dropdown-item">Error fetching results</div>');
+                            }
+                        });
+                    }
+
+                    $(document).on('click', '#liveSearch-result .dropdown-item', function () {
+                        var selectedTitle = $(this).data('title');
+                        var selectedIsbn = $(this).data('isbn');
+                        navigateToSearch(selectedTitle, selectedIsbn);
+                    });
+
+                    $('#liveSearch').keypress(function(event) {
+                        if (event.keyCode === 13) {
+                            var query = $('#liveSearch').val();
+                            navigateToSearch(query);
+                        }
+                    });
+
+                    function navigateToSearch(title, isbn) {
+                        var searchQuery = title ? title : $('#liveSearch').val();
+                        window.location.href = '/search?title=' + encodeURIComponent(searchQuery);
+                    }
+                });
+            </script>
         </div>
     </nav>
 </div>
@@ -81,8 +136,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="banner_taital">BookPirate <br>TCR Book DB</div>
-                <p class="banner_text">The TCR Book Lookup DataBase</p>
-                <div class="see_bt"><a href="#">See More</a></div>
+                 <p class="banner_text">The TCR Book Lookup DataBase</p>
+<!--                <div class="see_bt"><a href="/books" class="button">See More</a></div>-->
             </div>
         </div>
     </div>
@@ -92,7 +147,7 @@
 <main role="main">
     <div class="books py-5 bg-light">
         <div class="text-center">
-            <h1 class="h1">Recently added books</h1>
+            <h1 class="h1">Random Books</h1>
             <a class=" text-warning" href="static/books.html">See more</a>
         </div>
 
@@ -113,7 +168,7 @@
         <div class="footer_menu">
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="static/books.html">Books</a></li>
+                <li><a href="/books">Books</a></li>
             </ul>
         </div>
         <div class="social_icon">
@@ -140,7 +195,7 @@
 <script src="static/js/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="static/js/custom.js"></script>
 <!-- javascript -->
-<script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
 
 <script>
     $('#datepicker').datepicker({

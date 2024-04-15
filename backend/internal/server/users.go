@@ -169,6 +169,8 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	userToken := c.GetHeader(authorizationHeader)
+
 	var user models.User
 	if err := db.First(&user, &models.User{Email: authRequest.Email, Username: authRequest.Username}).Error; err != nil {
 		switch {
@@ -185,14 +187,14 @@ func Login(c *gin.Context) {
 		}
 		return
 	}
-	if user.Token == c.GetHeader(authorizationHeader) && len(user.Token) >= defaultAuthLength {
+	if user.Token == userToken && len(user.Token) >= defaultAuthLength {
 		c.JSON(http.StatusOK, Message{
 			Code:    AlreadyLoggedIn,
 			Message: messages[AlreadyLoggedIn],
 		})
 		return
-	} else if c.GetHeader(authorizationHeader) != "" {
-		if err := db.Where("token = ?", c.GetHeader(authorizationHeader)).First(&user).Error; err == nil {
+	} else if userToken != "" && len(userToken) > defaultAuthLength {
+		if err := db.Where("token = ?", userToken).First(&user).Error; err == nil {
 			c.JSON(http.StatusUnauthorized, Message{
 				Code:    InvalidSession,
 				Message: messages[InvalidSession],
@@ -238,6 +240,6 @@ func Login(c *gin.Context) {
 	})
 }
 
-func Logout() {
+func UserInfo(c *gin.Context) {
 
 }

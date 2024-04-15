@@ -129,31 +129,59 @@
         </div>
     </nav>
 </div>
-<div class="d-flex align-items-center py-4 bg-body-tertiary" style>
-    <main class="form-register w-100 m-auto">
-        <form id="loginForm" method="post">
-            <h1 class="h3 mb-3 fw-normal">Login</h1>
-            <div class="form-floating">
-                <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">Email address</label>
-            </div>
-            <div class="form-floating">
-                <input type="text" name="username" class="form-control" id="floatingUsername" placeholder="username">
-                <label for="floatingUsername">username</label>
-            </div>
-            <div class="form-floating">
-                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Password</label>
-            </div>
-            <button class="btn btn-primary w-100 py-2" type="button" onclick="sendRequest('loginForm', 'api/v1/login')">Submit</button>
-            <p class="mt-5 mb-3 text-body-secondary">© 2024</p>
-        </form>
+<div class="container">
+    <main role="main">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-3 border-bottom">
+            <h1 class="h2">Reserved Books</h1>
+        </div>
+
+
+        <h2>Outgoing books</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm" id="reservations">
+                <thead>
+                <tr>
+                    <th>Date rented</th>
+                    <th>ISBN</th>
+                    <th>Remove</th>
+                </tr>
+                </thead>
+                <tbody id="rentedlist">
+
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            window.onload = function () {
+                fetchStudentRentedBooks();
+            };
+        </script>
+
     </main>
 </div>
 
-<!-- Bootstrap Js -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<footer class="footer_section layout_padding">
+    <div class="container">
+        <div class="footer_menu">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="static/books">Books</a></li>
+            </ul>
+        </div>
+        <div class="social_icon">
+            <ul>
+                <li><a href="#"><img src="static/images/fb-icon.png"></a></li>
+                <li><a href="#"><img src="static/images/twitter-icon.png"></a></li>
+                <li><a href="#"><img src="static/images/linkedin-icon.png"></a></li>
+                <li><a href="#"><img src="static/images/instagram-icon.png"></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="copyright_text">© Copyright 2023 All Right Reserved By Marison & Tanay.</div>
+</footer>
 
+<!-- Javascript files-->
 <script src="static/wrapper.js"></script>
 <script src="static/js/jquery.min.js"></script>
 <script src="static/js/popper.min.js"></script>
@@ -166,5 +194,10 @@
 <!-- javascript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
 
+<script>
+    $('#datepicker').datepicker({
+        uiLibrary: 'bootstrap4'
+    });
+</script>
 </body>
 </html>
